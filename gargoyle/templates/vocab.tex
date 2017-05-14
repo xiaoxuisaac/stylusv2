@@ -1,0 +1,24 @@
+\documentclass[a4paper]{article} {% load latex %}
+\usepackage[utf8x]{inputenc}
+\usepackage[LGR, T1]{fontenc}
+\usepackage{textgreek}
+\usepackage{longtable}
+\usepackage[margin=1in]{geometry}
+\usepackage{datetime}
+\newdateformat{monthyeardate}{%
+\monthname[\THEMONTH], \THEYEAR}
+\title{Vocabulary in \textit{\textbf{}{{name_form.name.value|escape|tex}}}}
+\author{Compiled by AcadeMe for the {{name_form.project.value|escape|tex}}\footnote{for more information, visit stylus.academechina.com}}
+\date{\monthyeardate\today}
+\usepackage{natbib}
+
+\usepackage{graphicx}
+\begin{document}
+\maketitle
+\begin{longtable}{llp{11cm}}{% for vocab in vocab_formset%}{% if vocab.selected.value == True%}{% if vocab.sentence.value == ''%}
+\textbf{\textit{}{{vocab.word.value|escape}}} & {{vocab.pospeech.value|escape|tex_pos}} & {{vocab.dict_def.value|tex|tex_def}} \\[0.08cm]{% endif %}{% if vocab.sentence.value != ''%}
+\textbf{\textit{}{{vocab.word.value|escape}}} & {{vocab.pospeech.value|escape|tex_pos}} & {{vocab.dict_def.value|tex|tex_def}} \\
+ & & \textit{\textbf{}{{vocab.sentence.value|tex}}}\\[0.08cm]{% endif %}{% endif %}{% endfor %}
+\end{longtable}
+\end{document}
+  

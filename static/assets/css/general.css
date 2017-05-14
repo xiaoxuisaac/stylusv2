@@ -1,0 +1,109 @@
+@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+
+
+.passage {
+	max-width: 840px;
+}
+
+.logo {
+	color: #333;
+}
+.logo:hover {
+	color: #23527c;
+	text-decoration:none;
+}
+ .logo:focus {
+	color: #333;
+	text-decoration:none;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.home-container {
+	margin-top:15px;
+	margin-left:50px;
+	margin-right:50px; 
+	max-width:530;
+	position:relative;
+}
+
+.profile-corner{
+    margin-top:-10px;
+    margin-bottom:-15px;
+    padding:0px;
+}
+
+#version-label{
+	font-size: 10px; 
+	position: absolute; 
+	padding: .1em .5em .2em; 
+	top: 7px;  
+	background-color: #ddd; 
+	font-weight: 500;
+}
+
+@media (max-width: 768px){
+	.home-container{
+		margin-left: 5vw;
+		margin-right:5vw;
+	}
+    .profile-corner{
+        margin-bottom: -5px;
+    }
+
+    .title-corner{
+        max-width:80vw;
+    }
+	#version-label{
+		top: 17px;  
+	}
+}
+
+@media (max-width:520px){
+	#home-feedback {
+		display:none;
+	}	
+}
+
+#csv_button{
+	position:absolute;
+	bottom:27px;
+	right:12px;
+}
+@media (max-width:413px){
+	#csv_button{
+		bottom:55px;
+		right:22px;
+	}
+}
+
+@media (max-width:768px){
+	#home-content{
+		max-height:80vh;
+	}
+}
+
+@media (max-width:350px){
+	#home-content{
+		max-height:50vh; 
+	}
+}

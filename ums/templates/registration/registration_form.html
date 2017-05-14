@@ -1,0 +1,48 @@
+ <head>
+     <meta charset="utf-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these       tags -->
+     <title>
+     Registration | Stylus | AcadeMe·德明教育体验
+     </title>
+     <meta name="keywords" content="AcadeMe, 德明教育体验, 词汇, Stylus">
+     <meta name="description" content="AcadeMe·德明教育体验 词汇分析">
+     <!-- TO DO: Rewrite -->
+     <link href="/static/assets/css/bootstrap.css" rel="stylesheet">  
+     <link href="/static/assets/css/general.css" rel="stylesheet">    
+     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+     <link href="/static/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+       <link rel="icon" 
+           type="image/png" 
+           href="/static/assets/img/favicon.png">
+ 
+     <script src="/static/assets/js/vendor/jquery.min.js"> </script>
+     <script src="/static/assets/js/ga.js"> </script>
+ </head>
+ 
+<body>
+    <div class="container-fluid" style="margin-top:35px;margin-left:50px; max-width:540;">
+	    <h4>Registration</h4>
+		<form method="post"  action="/accounts/register/">
+            <div class="form-group">
+                {% csrf_token %}
+                {% for field in form %}
+                <label class='control-label' style='margin-top:10px;margin-bottom:0px;'>{{ field.label_tag }} </label>
+                <small class="form-text text-muted"> {{ field.errors }} </small>
+                {{ field }}
+                {% if field.help_text %}
+                <!--p class="help">{{ field.help_text|safe }}</p-->
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div class='pull-left'>
+                 <input type="submit" value="Submit" class='btn btn-default'/>
+            </div>
+		</form>
+		<div class='pull-right'>
+				<h4><a href='http://stylus.academechina.com' target='_blank' class='logo'>Stylus</a> | <a href='http://www.academechina.com' target='_blank' class='logo'>AcadeMe</a></h4>	
+		</div>
+        <p>{{verification}}{{form.verification}}{{form.kwargs.verification}}{{form.kwargs.0}}{{form.get_form_kwargs.0}}</p>
+    </div>
+</body>

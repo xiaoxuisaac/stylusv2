@@ -1,0 +1,36 @@
+.vocab-name{
+	display:inline-block;
+	padding:0px;
+}
+
+.vocab-time{
+	padding:0px;
+	
+}
+
+.vocab-retrieve-btn{
+	display:inline-block;
+	min-width: 70px;
+	padding-left:0px;
+	padding-right:0px;
+}
+
+.ocr-retrieve-btn{
+	display:inline-block;
+	min-width: 70px;
+	padding-left:0px;
+	padding-right:0px;
+}
+
+.ocr-retrieve-btn a{
+	min-width:70px;
+}
+.vocab-retrieve-btn.btn-group>.btn+.dropdown-toggle {
+    padding-right: 4px;
+    padding-left: 4px;
+}
+
+.vocab-history-entry {
+	margin-bottom:10px;
+	padding:0px;
+}

@@ -1,0 +1,12 @@
+Hello,
+
+Thank you very much for registering at Stylus! Your username is : {{user}}
+
+Please click the following link to activate your account:
+
+http://{{site}}/accounts/activate/{{activation_key}}
+
+
+Thanks!
+
+Stylus Team

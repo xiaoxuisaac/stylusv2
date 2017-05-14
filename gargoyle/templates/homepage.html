@@ -1,0 +1,154 @@
+ <head>
+     <meta charset="utf-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these       tags -->
+     <title>
+     Stylus | Glossary Generator | AcadeMe
+     </title>
+     <meta name="keywords" content="vocabulary, glossary, SAT, GRE, vocab generator, AcadeMe, 德明教育体验, 词汇, Stylus">
+     <meta name="description" content="Generate vocabulary list from text, PDFs, and images.">
+     <!-- TO DO: Rewrite -->
+     <!--link href="/static/assets/css/bootstrap.css" rel="stylesheet"-->  
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	 
+     <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
+
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js" integrity="sha384-VjEeINv9OSwtWFLAtmc4JCtEJXXBub00gtSnszmspDLCtC0I4z4nqz7rEFbIZLLU" crossorigin="anonymous"></script-->
+
+     <link href="/static/assets/css/general.css" rel="stylesheet">    
+     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+     <link href="/static/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+       <link rel="icon" 
+           type="image/png" 
+           href="/static/assets/img/favicon.png">
+ 
+     <script src="/static/assets/js/vendor/jquery.min.js"></script>
+     <script src="/static/assets/js/ga.js"></script>
+ </head>
+<!-- 以此献给2015-2016年在北京的日子 XX -->
+
+<div class="container-fluid home-container">
+    <div class='container-fluid profile-corner'>
+         <h5 align="right">
+     {% if user.is_anonymous %}
+              <a  class="logo" href="/accounts/login">Login</a>
+              {% else %}
+              {% if user.profile.first_name == ''%}
+              <a class="logo" style="margin-left:5px; margin-right:5px;float:none;" href="{% url 'profile' %}" target="_blank">{{user.get_username}}</a>
+              {% else %}
+              <a class="logo" style="margin-left:5px; margin-right:5px;float:none;" href="{% url 'profile' %}" target="_blank">{{user.profile.first_name}}</a>
+              {% endif %}
+        {% endif %} 
+         </h5>
+     </div>
+    <div class='fluid-container title-corner'>
+	<h2 style='display:inline;'>Stylus<span id='version-label' class="label label-default">beta</span></h2>
+	<h5 style='display:inline; margin-left:5px; '>proudly presented by <a href='http://www.academechina.com' target='_blank' class='logo'>AcadeMe</a></h5>
+    </div>
+	<form action="/vocab/" method="post" style="position:relative;margin-top:20px;">
+		<div class="form-group">
+   			{% csrf_token %}
+  	 		{{ passage_form.as_p }}
+  			<input id='sumbit'type="submit" name='_text' value="Generate Glossary" class='btn btn-default csv-text'style='min-width:143px;margin-bottom:5px;display:none;'  />
+            <button id = 'submit_label' onclick="load()" id='choose-file' class='btn-default btn' style='margin-bottom:5px;'>Generate Glossary</button>
+            <button onclick="upload_analyze()" id='choose-file' class='btn-default btn' style='margin-bottom:5px;'>Upload PDF</button>
+            <span id='word-download' style='display:none;margin-left:7px;position:absolute;margin-top:7px;'><a href='/' target='_blank'><i class="fa fa-file-word-o" style="font-size:1.5em;" aria-hidden="true"></i></a></span>
+			<div id='loading' style='display:none; margin-left:25px;padding-top:5px;'>
+				<img src='../static/assets/img/loading-circle.gif' height='24' style='padding-bottom:2px;'> Analyzing... This may take up to 40 seconds.
+			</div>
+		</div>
+	</form>
+	
+	<form action="/vocab/" id='file-form' class = 'csv-text' method="post" enctype="multipart/form-data" style='margin-bottom:14px; margin-top:-5px;'>
+		<div class="form-group" id='file-form-group'>
+   			{% csrf_token %}
+			{% for field in csv_form %}
+  	 		{{ field }}
+			{% endfor %}
+		</div>
+	</form>
+
+
+	<div id='csv_button'>
+    	<h5>
+			<a href='/feedback' target='_blank' class='logo' id='home-feedback' style="margin-right:3px;">feedback</a> 
+		</h5>	
+	</div>
+	<div style='position:absolute;'><p id='ocr-notice'></p></div>
+</div>
+
+<script>
+	 function load(){
+ 		console.log('click');
+ 		$("#loading").css('display', 'inline-block');
+		setTimeout($('#sumbit').click(), 30);
+	 }
+	 
+	 function fromcvs(){
+		 var labelVal = $('#choose-file').html();
+		 if (labelVal == 'Choose a file'){
+			 $('#choose-file').click();
+		 }
+	 }
+
+     function upload_analyze(){
+        $('#id_upload').click();
+     }
+
+    function makeid(l){
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for( var i=0; i < l; i++ )
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        return text;
+    }
+
+var inputs = document.querySelectorAll( '.inputfile' );
+Array.prototype.forEach.call( inputs, function( input )
+{
+	var label	 = $('#choose-file'),
+		labelVal = label.html();
+	input.addEventListener( 'change', function( e )
+	{
+		var fileName = '';
+        if(e.target.files.length>1){
+            fileName = e.target.files.length.toString()+' files';
+        }
+        else{
+		fileName = e.target.value.split( '\\' ).pop();
+        }
+        if(fileName != ''){
+            label.text(fileName.substring(0,30));
+            var fileName_c=fileName.replace(/\.[a-z,A-Z,0-9]+/g,'');
+            $('#id_name').val(fileName_c.substring(0,30));
+            $('#submit_label').html('Analyzing...');
+            $('#submit_label').prop('disabled',true);
+            var fd = new FormData($('form')[1]);
+            $.ajax({
+                url: '/ocr/',
+                type: 'POST',
+                success: function(data, status){
+                $('#home-content').text(data['text']);
+                $('#submit_label').html('Generate Glossary');
+                $('#submit_label').prop('disabled',false);
+                if(data['url']!=''){
+                    $('#word-download').find('a').attr('href',data['url']);
+                    $('#word-download').show();
+                }
+                $('#ocr-notice').html(data['notice'])
+                
+                },
+                data:fd,
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        }
+        else {
+			label.innerHTML = labelVal;
+        }
+	});
+});
+</script>

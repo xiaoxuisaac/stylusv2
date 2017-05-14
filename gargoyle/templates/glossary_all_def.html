@@ -1,0 +1,288 @@
+<link href="/static/assets/css/glossary_tags.css" rel="stylesheet"> 
+<link href="/static/assets/css/glossary.css" rel="stylesheet"> 
+ {% load gargoyle_extras %}   
+<div class="modal-body glossary-modal">
+	<input style='position:absolute; right: 15px; top: 15px'  type="submit" onclick ="deselect_glossary_defs()" value="Deselect All" class='btn btn-default btn-xs'/>
+	<div class="panel panel-default concordance">
+		<div class="panel-body">
+			<div class='concordance-button'>
+				<span class="glyphicon  glyphicon-chevron-left" aria-hidden="true"></span>
+				<span id="concordance-index">1</span>/<span>{{ concordance|length }}</span>
+				<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			</div>
+		    <div class='concordance-content'>... {{ concordance.0|safe }} ...</div>
+		  </div>
+	</div>
+	 <table class='table vocab-normal'>
+		{% for form in formset %} 
+		<tr>
+			<td class='glossary-word col-xs-2'>
+				<span class='glossary-word-token ' >{{ form.word.value|safe }}</span>
+				{{ form.dict_type }}
+			</td>
+			<td class='glossary-pos col-xs-1'>
+				<span class='glossary-pos-token'>{{ form.pospeech.value|web_pos }}</span>
+			</td>
+			<td class='glossary-def col-xs-9'>
+				{{ form.data.value|web_glossary_def|web_glossary_checkbox|safe}}
+			</td>
+			<td class='glossary-gid'>
+				{{ form.gid}}
+			</td>
+			<td class='glossary-entry_id'>
+				{{ form.entry_id}}
+			</td>
+			<td class='glossary-selected_sense'>
+				{{ form.selected_sense}}
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+	<div style='text-align:right;'>
+		<input id ='add_lemma' size =10 > </input>
+		<input style='margin-left:5px;'  type="submit" onclick ="add_lemma()" value="Add Word" class='btn btn-default btn-xs'/>
+	</div>
+</div>
+<div class="modal-footer glossary-modal">
+	<input type="submit" onclick ="sumbit_change()" value="Submit" id="glossary-submit" class='btn btn-primary'/>
+	<input type="submit" onclick ="deselect_glossary_defs()" value="Deselect All" class='btn btn-default'/>
+	<input type="submit" onclick ="close_modal()" value="Cancel" id="glossary-cancel" class='btn btn-default '/>
+</div>
+
+<script>
+	var check_flag = true;
+	var multi_check = false;
+	$(document).ready(function(){
+		$($('.glossary-modal tr')[0]).children().css('border-top','0px');
+	
+	
+		$('.glossary-word-token').each(function(){
+			var prev = $(this).closest('tr').prev();
+			if(prev.length != 0 && $(prev[0]).find('.glossary-word-token').text() == $(this).text()){
+				$(this).css('display','none');
+				$(this).closest('tr').find(".glossary-def").css('padding-top','20px');
+				$(this).closest('tr').find(".glossary-pos").css('padding-top','20px');
+				$(this).siblings().css('margin-top','20px');
+				if($(prev[0]).find('.glossary-pos-token').text() == $(this).closest('tr').find(".glossary-pos-token").text()){
+					$(this).closest('tr').find(".glossary-pos-token").css('display','none');
+					$(this).closest('tr').children().css('border-top','0px');
+				}
+			}	
+			});
+		
+			
+		$('.glossary-dt-selection').click( function(){
+			if($(this).is(':checked')){
+				$(this).prop("checked", false);
+			}
+			else{
+				$(this).prop("checked", true);
+			}	
+			});
+		
+		 $('.glossary-modal tr').each(function(){
+			var dt_list =$(this).find('dt');
+			for (var i = 0; i < dt_list.length; i++) {
+				$(dt_list[i]).find('.glossary-sense_id').val(i);
+			}
+			});
+			
+		
+			
+   	   	 $('.glossary-overflow-all').click(function() {
+   	   		$(this).closest('td').find('.glossary-dt-overflow').css('display','block');
+   			$(this).siblings('.glossary-overflow-collaspe').css('display','inherit');
+   			$(this).css('display','none');
+   	   		 });
+   	   	$('.glossary-overflow-collaspe').click(function() {
+   	   		$(this).closest('td').find('.glossary-dt-overflow').css('display','none');
+   			$(this).siblings('.glossary-overflow-all').css('display','inherit');
+   			$(this).css('display','none');
+   	   	});
+		
+		
+		 $('.glossary-modal tr').each(function(){
+			var sense_list = $($(this).find('.glossary-selected_sense .input-selected_sense')[0]).val()
+			if(sense_list!= ''){
+				sense_list = sense_list.split(',').map(Number);
+				for (var i = 0; i < sense_list.length; i++) {
+					$(this).find('.glossary-def').find('dt').each(function(){
+						if($(this).find('.glossary-sense_id').val()==sense_list[i]){
+							$(this).find('.glossary-dt-selection ').prop("checked", true);
+							var overflow = $(this).closest('.glossary-dt-overflow')
+							if(overflow.length !=0){
+								console.log($(this).closest('tr').find('.glossary-overflow-all'));
+								$(this).closest('tr').find('.glossary-overflow-all').click();
+							}
+						}
+						});
+				}
+			}
+			});
+			
+			
+			var counter=0;
+			$('.glossary-dt-selection').each(function() {
+			    if($(this).is(':checked')){
+			    	counter = counter + 1;
+			    }
+			});
+			multi_check = counter > 1;
+		
+			$('dt').click( function(){
+				if(check_flag == true && multi_check == false){
+					deselect_glossary_defs();
+					check_flag = false;
+				}
+				if($(this).find('.glossary-dt-selection').is(':checked')){
+					$(this).find('.glossary-dt-selection').prop("checked", false);
+					check_flag = false;
+					}
+				else{
+					if(check_flag == true){
+						deselect_glossary_defs();
+						check_flag = false;
+					}
+			  	  	$(this).find('.glossary-dt-selection').prop("checked", true);
+					}
+				});
+		
+		
+		var concordance = {{ concordance|safe }};	
+		if(concordance.length<2){
+			$(".concordance-button").css("color","#757575");
+		}	
+		$(".concordance-button .glyphicon-chevron-right").click(function(){
+			var i = parseInt($("#concordance-index").html());
+			if(i>=concordance.length){
+				i =0;
+			}
+			$(".concordance-content").html('... '+concordance[i]+' ...');
+			$("#concordance-index").html(i+1);
+		});
+		$(".concordance-button .glyphicon-chevron-left").click(function(){
+			var i = parseInt($("#concordance-index").html());
+			if(i==1){
+				i = concordance.length + 1;
+			}
+			$(".concordance-content").html('... '+concordance[i-2]+' ...');
+			$("#concordance-index").html(i-1);
+		});
+	});
+	
+	function close_modal(){
+		$('#defs_modal').modal('hide');
+	} 
+	function sumbit_change(){
+		var gid= $('.glossary-modal .input-gid').val()
+		defs = []
+		$('.glossary-modal tr').each(function(){
+			var eid = $(this).find('.input-entry_id').val();
+			sense_list=[]
+			$(this).find('.glossary-dt-selection').each(function(){
+				if($(this).is(':checked')){
+					var sense_id = $(this).closest('dt').find(".glossary-sense_id").val();
+					sense_list[sense_list.length] = sense_id;
+				}
+				});
+			if(sense_list.length!=0){
+				var select_entry = {'entry_id':eid, 'senses': sense_list};
+				defs[defs.length] = select_entry;
+			}
+			});
+		var type = 'select_table';
+		if($('#id_title').html() == 'Vocabulary in'){
+			type = 'select_table'
+		}
+		if($('#id_title').html() == 'Quiz for'){
+			type = 'quiz_select_table'
+		}
+		
+		var csrf = $('[name="csrfmiddlewaretoken"]').val()
+		var request_id = $('#id_name-request_id').val()
+        $.ajax({
+			headers: { "X-CSRFToken": csrf },
+            url: '/changedefs/',
+            type: 'POST',
+            success: function(data, status){
+				close_modal();
+				var gid = $(data).find('.input-gid').val();
+				var target = $('.vocab-gid input.input-gid[value='+gid+']').closest('tr');
+				for (var i = 0; i < target.length; i++) {
+					if(i==0){
+						var td = $(data).hide();
+						$(target[0]).replaceWith(td);
+						td.fadeIn(1000);
+					}
+					else{
+						$(target[i]).hide(1000);
+						$(target[i]).remove();
+					}
+				}
+				update_counter();
+				$(td).find('.text-select').closest('td').click( function(){
+					if($(this).closest('tr').find('.counter').is(':checked')){
+		  	 		   $(this).closest('tr').find('.counter').prop("checked", false);
+		  			}
+		  			else{
+	  	  	 			$(this).closest('tr').find('.counter').prop("checked", true);
+		  			}
+					update_counter();	  
+				});
+				def_menu_listener();
+				update_id();
+				$('#defs_modal-content').html('');
+            },
+            data:JSON.stringify({"new_table":{'request_id': request_id, "gid":gid, "defs":defs},"type":type}),
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+		
+	}
+	function add_lemma(){
+		var gid= $('.glossary-modal .input-gid').val();
+		var lemma= $('#add_lemma').val();
+		var csrf = $('[name="csrfmiddlewaretoken"]').val()
+		var request_id = $('#id_name-request_id').val()
+        $.ajax({
+			headers: { "X-CSRFToken": csrf },
+            url: '/addlemma/'+gid+'/',
+            type: 'POST',
+            success: function(data, status){
+				$('#defs_modal-content').html(data);
+            },
+            data:JSON.stringify({"gid":gid, 'lemma':lemma, 'request_id': request_id}),
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+		
+	}
+	function deselect_glossary_defs(){
+		$('.glossary-dt-selection').each(function(){
+			$(this).prop("checked", false);
+			});
+	}
+	function update_id(){
+		var tr=$("#vocab-table .vocab-selected").closest('tr');
+		for(var i=0; i< tr.length; i++){
+			children = $(tr[i]).children().children();
+			for(var n=0; n < children.length; n++){
+				child = $(children[n]);
+				id = child.attr("id");
+				id_list = id.split('-');
+				id_list[1] = i;
+				id  = id_list.join('-');
+				nm = child.attr("name");
+				nm_list = nm.split('-');
+				nm_list[1] = i;
+				nm = nm_list.join('-');
+				child.attr("id", id);
+				child.attr("name",nm);
+			}
+			
+		}
+		$('#id_vocab-TOTAL_FORMS').val(tr.length);
+	}
+</script>

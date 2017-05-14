@@ -1,0 +1,127 @@
+.glossary-modal it{
+	font-style:italic;
+}
+
+.glossary-modal dt{
+	font-weight:normal;
+	margin-bottom:8px;
+	position:relative;
+}
+
+
+.glossary-modal gram{
+	display:none;
+}
+
+
+.glossary-modal date{
+	display:none;
+}
+
+.glossary-modal sn{
+	font-weight:bold;
+	line-height:1em;
+}
+
+.glossary-modal snp{
+	font-weight:normal;
+	font-size:0.8em;
+	
+}
+
+.glossary-modal sl{
+	display:block;
+	font-style:italic;
+}
+
+.glossary-modal usageref{
+	display:none;
+}
+
+.glossary-modal bnote{
+	display:none;
+}
+.glossary-modal svr{
+	font-style:italic;
+}
+
+.glossary-modal svr sound,
+.glossary-modal svr pr{
+	display:none;
+}
+
+.glossary-modal slb{
+	display:none;
+}
+
+.glossary-modal ss{
+	display:none;
+}
+
+.glossary-modal us{
+	display:none;
+}
+
+.glossary-modal ssl{
+	font-style:italic;
+}
+
+.glossary-modal sd{
+	font-style:italic;
+}
+
+.glossary-modal sgram{
+	font-style:italic;
+}
+
+.glossary-modal wsgram{
+	font-style:italic;
+}
+
+.glossary-modal sp{
+	display:none;
+}
+
+
+.glossary-modal vt{ 
+	display:block;
+	font-style:italic;
+}
+.glossary-modal dt+vt{ 
+	border-top: 1px solid #ddd;
+	padding-top: 8px;
+}
+
+
+.glossary-modal label+un::before{
+	content: '';
+}
+
+
+.glossary-modal vi{
+	font-style:normal;
+	position:relative;
+	margin-left:16px;
+}
+
+.glossary-modal vi+vi+vi{
+	display:none;
+}
+
+.glossary-modal vi::before{
+    content: '\2022';
+    color: rgba(40, 96, 144, 0.73);
+    font-size: 2em;
+    left: -12px;
+	top:-0.4em;
+	position:absolute;
+}
+
+.glossary-modal label+dx{
+	display:inherit;
+	font-variant:small-caps;
+}
+
+.glossary-modal synref{
+	display:none;
+}

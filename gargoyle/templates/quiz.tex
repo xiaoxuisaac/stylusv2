@@ -1,0 +1,29 @@
+\documentclass[a4paper]{article} {% load latex %}
+\usepackage[utf8]{inputenc}
+\usepackage{longtable}
+\usepackage[margin=1in]{geometry}
+\usepackage{datetime}
+\newdateformat{monthyeardate}{%
+  \monthname[\THEMONTH], \THEYEAR}
+  
+\title{Vocabulary in \textit{\textbf{}{{name_form.name|escape|tex}}} Quiz}
+\author{Compiled by AcadeMe for the Homer Project\footnote{for more information, visit stylus.academechina.com}}
+\date{\monthyeardate\today}
+\usepackage{chngpage}
+\usepackage{array}
+\usepackage{natbib}
+\usepackage{graphicx}
+\begin{document}
+\maketitle{% for vocab30 in vocabs %}
+\begin{center}
+\begin{tabular}{|c|c|c|c|m{.7\textwidth}|}
+\hline
+No. & Words & Answer & No. & Definition \\
+\hline{% for vocab10 in vocab30 %}{% for vocab in vocab10 %}
+{{vocab.number}} & {{vocab.word}} & & {% cycle 'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' %} & {{vocab.dict_def|tex|tex_def}} \\
+\hline{% endfor %}
+{% cycle ' & & & & \\\\' ' & & & & \\\\' '' %}
+\hline{% endfor %}
+\end{tabular}
+\end{center}{% endfor %}
+\end{document}

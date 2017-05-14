@@ -1,0 +1,45 @@
+.navbar-fixed-left {
+  width: 180px;
+  position: fixed;
+  border-radius: 0;
+  height: 100%;
+}
+
+.navbar-fixed-left .navbar-nav > li {
+  float: none;  /* Cancel default li float: left */
+  width: 179px;
+}
+
+.navbar-fixed-left + .container {
+  padding-left: 180px;
+}
+
+/* On using dropdown menu (To right shift popuped) */
+.navbar-fixed-left .navbar-nav > li > .dropdown-menu {
+  margin-top: -50px;
+  margin-left: 140px;
+}
+
+.navbar-fixed-left .navbar-nav > .divider{
+	height: 1px;
+    margin: auto;
+    overflow: hidden;
+    background-color: #555;
+    width: 80%;
+}
+
+.navbar-brand a{
+	color:inherit;
+}
+
+.navbar-brand a:hover,
+.navbar-brand a:focus{
+	color:#fff;
+	text-decoration:inherit;
+}
+
+.navbar-brand:hover,
+.navbar-brand:focus{
+	color:#9d9d9d!important;
+}
+

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+ {% load gargoyle_extras %}
+ <head>
+     <meta charset="utf-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these       tags -->
+     <title>
+     Vocab | Stylus | AcadeMe·德明教育体验
+     </title>
+     <meta name="keywords" content="AcadeMe, 德明教育体验, 词汇, Stylus">
+     <meta name="description" content="AcadeMe·德明教育体验 词汇分析">
+     <!-- TO DO: Rewrite -->
+     <!--link href="../static/assets/css/bootstrap.css" rel="stylesheet"-->  
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	
+     <link href="/static/assets/css/general.css" rel="stylesheet">    
+     <link href="/static/assets/css/vocab.css" rel="stylesheet">    
+     <link href="/static/assets/css/vocab_tags.css" rel="stylesheet">    
+     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+     <link href="/static/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+       <link rel="icon" 
+           type="image/png" 
+           href="/static/assets/img/favicon.png">
+		   
+     <script src="/static/assets/js/vendor/jquery.min.js"> </script>
+     <script src="/static/assets/js/ga.js"> </script>
+ 	 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	 
+ </head>
+<body>
+	<div class="container-fluid vocab-container">
+		<form method="post"  target="_blank">
+		<div class='pull-left' style='margin-bottom:5px'>
+			<h3 id='title-line'><span id="id_title">{{title}}</span>
+				{% if title != 'Edit Reported Words' %}
+				 <i>{{name_form.name}}</i> <span>for</span> {{name_form.project}}
+				{% endif %}
+			 </h3>
+			 {{name_form.request_id}}
+			<div style='display:inline-block; width: 110px;'>Word Count: <span id='counter1'>0</span></div>
+			{% if title != 'Edit Reported Words' %}
+			<div id='cutoff_form' style='display:inline; margin-left: 25px;'>
+			<input type="text" id='cutoff_input' name="cutoff" value="7.0" size=3>
+			<input type="button" onclick="cut()" id='cutoff_btn' value="Difficulty Cut-Off" class='btn btn-xs btn-default'>
+			<span class="glyphicon glyphicon-th def_menu def_menu-highlight" style ="margin-left:27px;"></span>
+			<div style='display:inline-block; margin-left: 3px;'>Suggest review</div>
+		</div>
+			{% else %}
+			<div id='diff_form' style='display:inline; margin-left: 25px'>
+				<input type="text" id='diff_word' size=10>
+				<input type="button" onclick="diff()" id='diff_btn' value="Check Difficulty" class='btn btn-xs btn-default'>
+				<div id='diff_value' style='display:inline; margin-left: 5px'></div>
+			</div>
+			{% endif %}
+			
+		</div>
+			{% csrf_token %}
+			{{ formset.management_form }}
+			 <table id='vocab-table' class='table vocab-normal'>
+				<tr>
+					<th><input id="check_all" type="checkbox"></th>
+					<th>Word</th>
+					<th class='vocab-difficulty'>Diff.</th>
+					<th class='vocab-highlight_selection'> </th>
+					<th class='vocab-pospeech' style='padding-left:0px;'>POS</th>
+					<th class='vocab-webster_def'>Definition <a id='full-sheet' onclick='document.getElementById("vocab-table").className =
+"table"' >full &#187;</a></th>
+					<th class='vocab-sentence'>Sample Sentence</th>
+				</tr>
+				{% for form in formset %} 
+				<tr>
+					<td class='vocab-{{form.selected.name}}'>{{form.selected}}</td>
+					<td class='vocab-{{form.gid.name}}'>{{form.gid}}</td>
+					<td class='vocab-{{form.entry_id.name}}'>{{form.entry_id}}</td>
+					<td class='vocab-{{form.sense_id.name}}'>{{form.sense_id}}</td>
+					<td class='vocab-{{form.word.name}}'>{{form.word}}</td>
+					<td class='vocab-{{form.difficulty.name}}'>{{form.difficulty}}</td>
+					<td class='vocab-{{form.highlight_selection.name}}'>{{form.highlight_selection}}</td>
+					<td class='vocab-{{form.pospeech.name}}'>{{form.pospeech|web_pos|safe}}</td>
+					<td class='vocab-{{form.dict_def.name}}'>{{form.dict_def|web_def|safe}}</td>
+					<td class='vocab-{{form.sentence.name}}'>{{form.sentence|web_def|safe}}</td>
+					<td class='vocab-{{form.sentence_custom.name}}'>{{form.sentence_custom}}</td>
+
+				</tr>
+				{% endfor %}
+			</table>
+			<p>Word Count: <span id='counter2'>0</span></p>	
+			<div class='pull-left vocab-submit'>
+				{% if title == 'Vocabulary in' %}
+				<input type="submit" value="Generate Glossary" name="_pdf" formaction="/pdf/"  class='btn btn-primary'/>
+				
+				<input type="submit" value="Generate Quiz & Answer" name="_quiz" formaction="/quiz/"  class='btn btn-default'/>
+				{% endif %}
+				{% if title == 'Quiz for' %}
+	  			<input type="submit" value="Generate Quiz & Answer" name="_quiz" formaction="/quiz-pdf/" class='btn btn-default'/>
+				{% endif %}				 
+			</div>
+			</form>
+			<div class='pull-right'>
+				<h4><a href='http://stylus.academechina.com' target='_blank' class='logo'>Stylus</a> | <a href='http://www.academechina.com' target='_blank' class='logo'>AcadeMe</a></h4>	
+			</div>
+		</div>
+		<div class="modal fade" id="defs_modal" role="dialog">
+		    <div class="modal-dialog">
+    
+		         <!-- Modal content-->
+		         <div class="modal-content" id="defs_modal-content">
+		           
+		         </div>
+      
+		       </div>
+			
+		</div>
+</body>
+
+<script>
+	$(document).ready(function(){
+		update_counter();
+	    $(".counter").change(function(){
+			update_counter();
+		});
+	
+	    $("#check_all").change(function(){
+			if($("#check_all").is(':checked')){
+				$('.counter').each(function() {
+					$(this).prop("checked", true);
+				});
+			} else {
+				$('.counter').each(function() {
+					$(this).prop("checked", false);
+				});
+			}
+			update_counter();
+		});
+	
+		$(window).keydown(function(event){
+		    if(event.keyCode == 13) {
+		      event.preventDefault();
+		      return false;
+		    }
+		  });
+	
+		$("#cutoff_input").keyup(function(event){
+		    if(event.keyCode == 13){
+		        $("#cutoff_btn").click();
+		    }
+		});
+		
+		$('tr .text-select').closest('td').click( function(){
+			if($(this).closest('tr').find('.counter').is(':checked')){
+		  	  $(this).closest('tr').find('.counter').prop("checked", false);
+		  	}
+		  	else{
+	  	  	  $(this).closest('tr').find('.counter').prop("checked", true);
+		  	}
+			update_counter();	  
+		});
+		def_menu_listener();
+	});	
+
+	function def_menu_listener(){
+		$('tr .def_menu').click( function(){
+			var gid = $(this).closest('tr').find('.input-gid').val()
+			var request_id = $('#id_name-request_id').val()
+			var csrf = $('[name="csrfmiddlewaretoken"]').val()
+	        $.ajax({
+				headers: { "X-CSRFToken": csrf },
+	            url: '/senses/'+gid.toString()+'/',
+	            type: 'POST',
+	            success: function(data, status){
+					$('#defs_modal').modal();
+					$('#defs_modal-content').html(data);
+	            },
+				error: function (jqXHR, exception) {
+					$('#defs_modal-content').html('<div class="modal-body glossary-modal">Error occurs. Please refresh the page and retry.</div>');
+					$('#defs_modal').modal();
+				},
+	            data:JSON.stringify({"request_id":request_id}),
+	            cache: false,
+	            contentType: false,
+	            processData: false
+	        });
+			});
+	}
+
+
+function cut() {
+	var c = parseFloat($("#cutoff_input").val());
+	$('.counter').each(function() {
+		var d = parseFloat($(this).closest('tr').find('.input-difficulty').val());
+		if(d<c){
+			$(this).prop("checked", false);
+		}
+		else{
+			$(this).prop("checked", true);
+		}
+	
+	});
+	update_counter()
+}
+
+
+function diff(){
+	 $('#diff_value').load('/diff/'+$('#diff_word').val())
+}
+
+function update_counter(){
+		var counter=0;
+		var trs = $('table tr')
+		$('.counter').each(function() {
+		    if($(this).is(':checked')){
+		    	counter = counter + 1;
+		    }
+		});
+		document.getElementById("counter1").innerHTML = counter.toString();
+		document.getElementById("counter2").innerHTML = counter.toString();
+	}
+	
+</script>

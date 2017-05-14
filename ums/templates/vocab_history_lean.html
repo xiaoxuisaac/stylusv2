@@ -1,0 +1,48 @@
+	{% load i18n static %}
+    <link href="/static/assets/css/vocab_history.css" rel="stylesheet">    
+	<div class="container-fluid" style="margin-top:20px;margin-left:0; max-width:640px;">
+	    <h3>History</h3>
+
+	{% block content %}
+	{% csrf_token %}
+	 <h4>Generated Vocabularies</h4>
+
+	{% for vocab in vocabs %} 
+	<div class='container-fluid vocab-history-entry '>
+	<div class='vocab-time col-xs-2'  >{{vocab.time.month}} {{vocab.time.day}} </div>
+	<div class ='vocab-name col-xs-7' ><i>{{vocab.name.name}}</i> for {{vocab.name.project}} ({{vocab.counter}} words)</div>
+	
+	<div class="btn-group vocab-retrieve-btn col-xs-3">
+	  <a type="button" href='{% url 'get_vocab'%}?code={{vocab.code}}' class="btn btn-xs btn-default" target='_blank'>retrieve</a>
+	  <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	    <span class="caret"></span>
+	    <span class="sr-only">Toggle Dropdown</span>
+	  </button>
+	  <ul class="dropdown-menu">
+	    <li><a href='{% url 'get_vocab'%}?code={{vocab.code}}&duplicate=True' target='_blank'>duplicate vocab list</a></li>
+	    <li role="separator" class="divider"></li>
+	    <li><a href='{% url 'get_vocab'%}?code={{vocab.code}}&typ=quiz'  target='_blank'>retrieve quiz</a></li>
+	    <li><a href='{% url 'get_vocab'%}?code={{vocab.code}}&duplicate=True&typ=quiz' target='_blank' >duplicate quiz</a></li>
+	    <li role="separator" class="divider"></li>
+	    <li><a href='{% url 'delete_vocab'%}?code={{vocab.code}}' >delete</a></li>
+	  </ul>
+	</div>
+	</div>
+	
+	{% endfor %}
+	 
+	 <h4 style='margin-top:20px;'>OCRed PDFs (Last 7 Days)</h4>
+
+	{% for ocr in ocrs %} 
+	<div class='container-fluid vocab-history-entry '>
+	<div class='vocab-time col-xs-2'  >{{ocr.time.month}} {{ocr.time.day}} </div>
+	<div class ='vocab-name col-xs-7' >{{ocr.file.filename}} </div>
+	<div class="btn-group ocr-retrieve-btn col-xs-3">
+  	  <a type="button" href='{{ocr.file.upload.url}}' class="btn btn-xs btn-default" target='_blank'>download</a>
+	</div>
+	
+	</div>
+	{% endfor %}
+
+	{% endblock %}
+</div>

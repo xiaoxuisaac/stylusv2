@@ -1,0 +1,97 @@
+it {
+	font-style:italic;
+}
+
+sx{
+	font-variant:small-caps;
+}
+
+sxn{
+	display:none;	
+}
+
+sx + sx::before{
+    content: ', ';
+}
+
+aq::before {
+	content:" —";
+}
+
+dx{
+	display:none;
+}
+
+.vocab-dict_def dx:only-child{
+	font-style:italic;
+	font-variant:small-caps;
+	display:inline;
+}
+
+
+
+un::before{
+    content: '-';
+}
+
+/*un:first-child::before{
+	content: '';
+}*/
+
+vi+un{
+	display:none;
+}
+
+un+un{
+	display:none;
+}
+
+snote{
+	display:none;
+}
+
+snote:first-child{
+    display:inline;
+}
+
+snote:first-child::before{
+	content: '';
+}
+
+synref{
+	display:none;
+}
+
+
+.vocab-dict_def vi{
+	display:none;
+}
+
+.vocab-dict_def wsgram{
+	display:none;
+}
+
+.vocab-dict_def dt{
+	display:inline;
+	font-weight:normal;
+}
+
+.vocab-dict_def sn{
+	font-weight:bold;
+	display:inline-block;
+	margin-right:3px;
+}
+
+.vocab-dict_def sn::after{
+	content:':';
+}
+
+.vocab-dict_def sd{
+	font-style:italic;
+}
+
+
+.vocab-dict_def sd::before,
+.vocab-dict_def sd::after{
+	content:', ';
+}

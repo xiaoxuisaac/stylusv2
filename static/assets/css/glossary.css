@@ -1,0 +1,128 @@
+@media(min-width: 800px){
+	.modal-dialog{
+		width: 740px;
+	}
+}
+
+.concordance{
+	position:absolute;
+	width:495px;
+	height:60px;
+	right: 15px;
+	top:35px;
+	border:0px;
+	box-shadow:none;
+    background-color: rgba(0, 0, 0, 0.00);
+	display:table;
+}
+
+.panel-body{
+	padding:0px;
+	display:table-cell;
+	vertical-align:middle;
+}
+
+.concordance-button{
+	float:right;
+	font-size:0.75em;
+    color: #666;
+	position:absolute;
+	top:22px;
+	right:0px;
+}
+
+.concordance-button span.glyphicon:hover{
+	cursor:pointer;
+}
+
+.concordance-content{
+    float: left;
+    width: 452px;
+    padding-right: 5px;
+	font-size:0.9em;
+	text-align: center;
+    color: #777;
+}
+
+.concordance-content it{
+	font-variant:small-caps;
+	font-size:1.3em;
+}
+
+.glossary-modal a:hover{
+	cursor:pointer;
+	text-decoration:none;
+}
+
+.glossary-modal .glossary-word{
+	 font-family: 'Playfair Display',serif;
+	 font-size: 2.2em;
+	 padding-top: 0px;
+}
+
+@media(max-width: 799px){
+	.glossary-modal .glossary-word{
+   	 	font-size: 2.2em;
+	}
+	.concordance{
+		display:none;
+	}
+}
+
+.glossary-modal .glossary-word .glossary-word-token{
+	padding-top: 20px;
+	display:block;
+	
+}
+
+.glossary-modal .glossary-pos{
+	padding-top: 40px;
+}
+
+.glossary-modal .glossary-def{
+	padding-top: 75px;
+	padding-left:25px;
+}
+
+.glossary-modal dt label{
+    position: absolute;
+    left: -25px;
+}
+
+.glossary-modal .dict_logo{
+	display:block;
+	width:42px;
+	margin-top:5px;
+	margin-left:-4px;
+}
+
+.dict_logo-learner{
+	content:url(/static/assets/img/learner_logo1.png);
+}
+.dict_logo-collegiate{
+	content:url(/static/assets/img/collegiate_logo1.png);
+}
+
+.glossary-modal .glossary-pos{
+	font-style:italic;
+	font-weight:bold;
+}
+
+
+.glossary-dt-overflow {
+	display:none;
+}
+
+
+#add_lemma {
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	outline: none;
+	display: inline-block;
+	border: none;
+	border-bottom: 1px solid #ddd;
+	background: transparent;
+	height: 20px;
+}
+

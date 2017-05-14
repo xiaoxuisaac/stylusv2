@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+ {% load gargoyle_extras %}
+ <head>
+     <meta charset="utf-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these       tags -->
+     <title>
+     Profile | Stylus | AcadeMe·德明教育体验
+     </title>
+     <meta name="keywords" content="AcadeMe, 德明教育体验, 词汇, Stylus">
+     <meta name="description" content="AcadeMe·德明教育体验 词汇分析">
+     <!-- TO DO: Rewrite -->
+     <!--link href="../static/assets/css/bootstrap.css" rel="stylesheet"-->  
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	
+     <link href="/static/assets/css/general.css" rel="stylesheet">    
+     <link href="/static/assets/css/profile.css" rel="stylesheet">    
+     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+     <link href="/static/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+       <link rel="icon" 
+           type="image/png" 
+           href="/static/assets/img/favicon.png">
+		   
+     <script src="/static/assets/js/vendor/jquery.min.js"> </script>
+     <script src="/static/assets/js/ga.js"> </script>
+ 	 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	 
+ </head>
+<body>
+	
+<div class="navbar navbar-inverse navbar-fixed-left">
+  <span class="navbar-brand"><a href="{% url 'profile' %}">Profile</a> | <a href="/">Stylus</a></span >
+  <ul class="nav navbar-nav">
+   <li><a class='load_href' id="{% url 'vocab_history' %}" href="#">History</a></li>
+   <!--li class="divider"></li-->
+   <li><a class='load_href' href="#" id="{% url 'get_ocr' %}">Get OCR Pages</a></li>
+   <li><a class='load_href' href="#" id = {% url 'password_change' %}>Change Password</a></li>
+   <li class="divider"></li>
+   <li><a href="{% url 'logout' %}">Logout</a></li>
+  </ul>
+</div>
+<div id ='filled_in' class="container">
+ <div class="row">
+   
+ </div>
+</div>
+<input id='load_url' value='{{load_url}}' style='display:none;'/>
+</body>
+
+<script>
+	
+	$(document).ready(function(){
+		$('.navbar .load_href').click( function(){
+			$.get( $(this).attr('id'), function( data ){
+				console.log(data);
+				$('#filled_in').html(data);
+			});
+		});
+		
+		$('a[id*="'+$('#load_url').val()+'"]').click();
+		
+	});
+</script>
