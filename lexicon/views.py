@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.conf import settings
 from models import *
-from lib.custom_text import Text 
+from utils.custom_text import Text 
 import nltk
 from nltk.corpus import stopwords, names
 from db_backend.learner_api_query import add_learner
