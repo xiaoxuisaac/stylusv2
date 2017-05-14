@@ -1,0 +1,1 @@
+<testsuite errors="0" failures="0" name="Django Project Tests" skips="0" tests="1" time="0.845"><testcase classname="lexicon.tests.AnalyzePassageTestCase" name="test_analyze_works" time="0.533173" /></testsuite>

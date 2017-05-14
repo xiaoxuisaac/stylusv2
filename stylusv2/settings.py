@@ -76,6 +76,10 @@ TEMPLATES = [
     },
 ]
 
+JENKINS_TASKS = ( 
+    'django_jenkins.tasks.with_coverage',
+    'django_jenkins.tasks.run_pylint',
+)
 
 
 WSGI_APPLICATION = 'stylusv2.wsgi.application'
