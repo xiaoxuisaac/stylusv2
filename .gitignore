@@ -90,6 +90,6 @@ ENV/
 
 
 #stylusv2
-raw_data/
-media/
+media/*
 *.csv
+
