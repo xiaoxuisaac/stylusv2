@@ -1,4 +1,4 @@
-from __future__ import print_function
+from __future__ import #print_function
 import os as _os
 import warnings as _warnings
 import datetime
@@ -107,7 +107,7 @@ def get_all_defs(request, gid):
         request_id = json.loads(request.body)['request_id']
         session_var = SessionVariables.objects.get(request_id=request_id)   
         if request_id != request.session['request_id']:
-            print("updating session variables")
+            #print("updating session variables")
             update_session(request, session_var)
         glossary = request.session['glossary_dict'][gid]
         concordance = []
@@ -393,7 +393,7 @@ def select_table_from_vocabfm(vocab_formset, drop = False):
         entry_id = vocab['entry_id']
         sense_id = vocab['sense_id']
         selected = vocab['selected']
-        print(vocab['highlight_selection'])
+        #print(vocab['highlight_selection'])
         for glossary in select_table:
             if glossary['gid'] == str(gid):
                 new_glossary = False
@@ -674,7 +674,7 @@ class TemporaryDirectory(object):
                 # up due to missing globals
                 if "None" not in str(ex):
                     raise
-                print("ERROR: {!r} while cleaning up {!r}".format(ex, self,),
+                #print("ERROR: {!r} while cleaning up {!r}".format(ex, self,),
                       file=_sys.stderr)
                 return
             self._closed = True
