@@ -94,7 +94,12 @@
 				{% endif %}
 				{% if title == 'Quiz for' %}
 	  			<input type="submit" value="Generate Quiz & Answer" name="_quiz" formaction="/quiz-pdf/" class='btn btn-default'/>
-				{% endif %}				 
+				{% endif %}
+	        {% if user.is_anonymous %}
+			<div style='margin-top:5px;'>
+				<p>(hint: <a href = {% url 'login' %} target='_blank'>login</a> to store your glossaries and quizzes.)</p>
+			</div>
+			{% endif %}    
 			</div>
 			</form>
 			<div class='pull-right'>
