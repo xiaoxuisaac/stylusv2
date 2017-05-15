@@ -15,7 +15,7 @@ def log_compound(request):
             owner = 'anonymous'
         else:
             owner = ld.owner.user.username
-        if ld.owner != None and (not ld.owner.user.is_superuser) or settings.DEBUG:
+        if ld.owner == None or (ld.owner != None and (not ld.owner.user.is_superuser)) or settings.DEBUG:
          logs.append({'time':ld.created_date, 'ip':ld.ip_addr,'owner':owner, 'info': ld.info})
     return render(request,'log.html',{'logs':logs})
     
