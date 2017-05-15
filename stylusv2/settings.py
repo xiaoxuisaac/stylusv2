@@ -27,7 +27,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-
+ADMINS = [('Xu Xiao','xiaoxuisaac@gmail.com')]
 # Application definition
 
 INSTALLED_APPS = [
