@@ -92,4 +92,4 @@ ENV/
 #stylusv2
 media/*
 *.csv
-
+backup/*
