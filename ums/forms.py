@@ -5,6 +5,7 @@ from .models import *
 from django import forms
 from django.contrib.auth.forms import PasswordChangeForm as PasswordChangeBaseForm
 from django.contrib.auth.forms import AuthenticationForm as AuthenticationBaseForm
+from django.contrib.auth.forms import PasswordResetForm as PasswordResetBaseForm
 
 class StylusRegistrationForm(RegistrationBaseForm):
     class Meta(RegistrationBaseForm.Meta):
@@ -55,3 +56,6 @@ class AuthenticationForm(AuthenticationBaseForm):
         strip=False,
         widget=forms.PasswordInput(attrs={'type':'password','class':'form-control'})
     )
+
+class PasswordResetForm(PasswordResetBaseForm):
+    email = forms.EmailField(label=_("Email"), max_length=254,widget=forms.EmailInput(attrs={'type':'email','class':'form-control'}))
