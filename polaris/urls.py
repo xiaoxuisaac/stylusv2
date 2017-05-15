@@ -4,4 +4,5 @@ import views
 
 urlpatterns = [
     url(r'^log$', views.log_compound, name='log_compound'),
+    url(r'^$', views.log_compound),
 ]
