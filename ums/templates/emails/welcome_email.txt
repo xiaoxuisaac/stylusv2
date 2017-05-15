@@ -1,7 +1,9 @@
 {% load i18n %}{% autoescape off %}
-{% trans "Please go to the following page and choose a new password:" %}
+Hi {{ profile.user.get_username }},
+
+Thank you very much for being a user of Stylus! We are here to excitedly launch a new update of Stylus, including over more than 50 new functions. In 
 {% block reset_link %}
-{{profile.pwd_reset_link}}
+http://stylus.academechina.com{{profile.pwd_reset_link}}
 {% endblock %}
 {% trans "Your username, in case you've forgotten:" %} {{ profile.user.get_username }}
 
