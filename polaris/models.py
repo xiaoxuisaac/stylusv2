@@ -62,7 +62,7 @@ def quiz_pdf_log(sender, request, session_variable, **kwargs):
     log.ip_addr = get_ip(request) 
     log.request_type = 'vocab_pdf'
     if request.user.is_authenticated(): log.owner = request.user.profile
-    select_table = pickle.dumps(session_variable.quiz_select_table)
+    select_table = pickle.loads(session_variable.quiz_select_table)
     count = 0
     for s in select_table:
         if s['selected']: count += 1
