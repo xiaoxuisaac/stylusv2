@@ -93,3 +93,4 @@ ENV/
 media/*
 *.csv
 backup/*
+local_setting.py
