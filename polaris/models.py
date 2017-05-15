@@ -66,7 +66,7 @@ def quiz_pdf_log(sender, request, session_variable, **kwargs):
     count = 0
     for s in select_table:
         if s['selected']: count += 1
-    log.info = 'Export Quiz PDF, ' + str(count) + ' Words, for'+pickle.loads(session_variable.name)['name']
+    log.info = 'Export Quiz PDF, ' + str(count) + ' Words, for '+pickle.loads(session_variable.name)['name']
     log.note = session_variable.request_id
     log.save()
     
