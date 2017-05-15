@@ -1,0 +1,10 @@
+{% load i18n %}{% autoescape off %}
+{% trans "Please go to the following page and choose a new password:" %}
+{% block reset_link %}
+{{profile.pwd_reset_link}}
+{% endblock %}
+{% trans "Your username, in case you've forgotten:" %} {{ profile.user.get_username }}
+
+{% trans "Thanks for using our site!" %}
+
+{% endautoescape %}

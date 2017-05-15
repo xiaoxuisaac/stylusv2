@@ -28,6 +28,18 @@ class Profile(models.Model):
                 self.invitation=id_generator(5)
                 flag=True
         return super(Profile, self).save(*args, **kwargs)
+    
+    def get_pwd_reset_link(self):
+        from django.utils.http import urlsafe_base64_encode
+        from django.utils.encoding import force_bytes
+        from django.contrib.auth.tokens import default_token_generator
+        from django.urls import reverse
+        token_generator=default_token_generator
+        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
+        token = token_generator.make_token(self.user)
+        return reverse('password_reset_confirm', kwargs={'uidb64':uid, 'token':token})
+    pwd_reset_link = property(get_pwd_reset_link)
+    
     def __str__(self):
         return self.user.username
     
