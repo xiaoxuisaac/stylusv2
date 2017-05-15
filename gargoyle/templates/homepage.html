@@ -47,12 +47,12 @@
 	<h2 style='display:inline;'>Stylus<span id='version-label' class="label label-default">beta</span></h2>
 	<h5 style='display:inline; margin-left:5px; '>proudly presented by <a href='http://www.academechina.com' target='_blank' class='logo'>AcadeMe</a></h5>
     </div>
-	<form action="/vocab/" method="post" style="position:relative;margin-top:20px;">
+	<form method="post" style="position:relative;margin-top:20px;">
 		<div class="form-group">
    			{% csrf_token %}
   	 		{{ passage_form.as_p }}
-  			<input id='sumbit'type="submit" name='_text' value="Generate Glossary" class='btn btn-default csv-text'style='min-width:143px;margin-bottom:5px;display:none;'  />
-            <button id = 'submit_label' onclick="load()" id='choose-file' class='btn-default btn' style='margin-bottom:5px;'>Generate Glossary</button>
+  			<input id='id_sumbit'type="submit" name='_text' value="Generate Glossarys" class='btn btn-default csv-text'style='min-width:143px;margin-bottom:5px;display:none;' formaction="/vocab/" />
+            <label id = 'submit_label' onclick="load()" class='btn-default btn' style='margin-bottom:5px;'>Generate Glossary</label>
             <button onclick="upload_analyze()" id='choose-file' class='btn-default btn' style='margin-bottom:5px;'>Upload PDF</button>
             <span id='word-download' style='display:none;margin-left:7px;position:absolute;margin-top:7px;'><a href='/' target='_blank'><i class="fa fa-file-word-o" style="font-size:1.5em;" aria-hidden="true"></i></a></span>
 			<div id='loading' style='display:none; margin-left:25px;padding-top:5px;'>
@@ -83,7 +83,10 @@
 	 function load(){
  		console.log('click');
  		$("#loading").css('display', 'inline-block');
-		setTimeout($('#sumbit').click(), 30);
+		setTimeout(function() {
+		    console.log('STYLUS!');
+		}, 30);
+		$('#id_sumbit').click();
 	 }
 	 
 	 function fromcvs(){
