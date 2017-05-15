@@ -6,7 +6,6 @@
 	{% block content %}
 	{% csrf_token %}
 	 <h4>Generated Vocabularies</h4>
-
 	{% for vocab in vocabs %} 
 	<div class='container-fluid vocab-history-entry '>
 	<div class='vocab-time col-xs-2'  >{{vocab.time.month}} {{vocab.time.day}} </div>
@@ -28,7 +27,8 @@
 	  </ul>
 	</div>
 	</div>
-	
+	{% empty %}
+	<p> <i>Your generated vocabularies will be shown here</i></p>
 	{% endfor %}
 	 
 	 <h4 style='margin-top:20px;'>OCRed PDFs (Last 7 Days)</h4>
@@ -42,6 +42,8 @@
 	</div>
 	
 	</div>
+	{% empty %}
+	<p> <i>Your OCRed PDF files will be shown here</i></p>
 	{% endfor %}
 
 	{% endblock %}
