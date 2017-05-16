@@ -171,7 +171,6 @@ def add_lemma(request, gid):
    
 def get_pdf(request, order = 'difficulty'):
     if request.method == 'POST':
-        print order
         VocabFormSet = formset_factory(VocabForm,extra=0)
         vocab_formset = VocabFormSet(request.POST,prefix='vocab')
         name_form = NameForm(request.POST,prefix='name')

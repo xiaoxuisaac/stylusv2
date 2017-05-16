@@ -15,7 +15,7 @@ def tex_def(value):
     value = value.replace('<dt>', ' \iffalse <dt>\\fi ').replace('</dt>', ' \iffalse </dt>\\fi ')
     value = value.replace('<un>', ' -\iffalse <un>\\fi ').replace('</un>', ' \iffalse </un>\\fi ')
     value = value.replace('<fw>', ' \iffalse <fw>\\fi ').replace('</fw>', ' \iffalse </fw>\\fi ')
-    value = value.replace('<d_link>', ' \iffalse <d_link>\\fi ').replace('</d_link>', ' \iffalse </d_link>\\fi ')
+    value = value.replace('<d\_link>', ' \iffalse <d\_link>\\fi ').replace('</d\_link>', ' \iffalse </d\_link>\\fi ')    
     value = value.replace('<sx>', ' \\textsc{ ').replace('</sx>', '} ')
     value = value.replace('<wsgram>', ' \iffalse <wsgram>').replace('</wsgram>', '</wsgram>\\fi ')
     value = value.replace('<snote>', ' \iffalse <snote>').replace('</snote>', '</snote>\\fi ')
@@ -23,6 +23,7 @@ def tex_def(value):
     value = value.replace('<vi>', ' \iffalse <vi>').replace('</vi>', '</vi>\\fi ')
     value = value.replace('<synref>', ' \iffalse <synref>\\fi ').replace('</synref>', ' \iffalse </synref>\\fi ')
     return value
+    
 def tex_pos(value):
     pos_dic = {
         'nounpluralbutsingularorpluralinconstruction':'n.',
