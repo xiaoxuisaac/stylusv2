@@ -21,7 +21,9 @@ def web_pos(field):
         value = field.as_widget()
     pos_dic = {
         'nounpluralbutsingularorpluralinconstruction':'n.',
+        'n.pluralbutsingularorpluralinconstruction':'n.',
         'nounsingularbutsingularorpluralinconstruction':'n.',
+        'n.singularbutsingularorpluralinconstruction':'n.',
         'noun':'n.',
         'verb':'v.',
         'adjective':'adj.',
