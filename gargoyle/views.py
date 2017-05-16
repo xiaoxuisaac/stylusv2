@@ -25,17 +25,16 @@ from .models import *
 from .forms import *
 from .signals import *
 
-
-
 #////////////////////////////////////////////////////////////
 # Protal  
 #////////////////////////////////////////////////////////////
-    
+
 def homepage(request):
     passage_form =PassageForm()
     #logger.info(get_ip(request)+' Visiting Home Page')
     file_form = FilesForm()
     return render(request,'homepage.html',{'passage_form':passage_form,'csv_form':file_form})
+
 
 def feedback(request):
     if request.method == 'POST':
@@ -45,6 +44,7 @@ def feedback(request):
         return render(request,'comment_success.html')
     else:
         return render(request,'comment.html',{'comment_form':CommentForm()})
+
 
 def vocab(request):
     if request.method == 'POST':# and '_text' in request.POST:
@@ -81,6 +81,7 @@ def vocab(request):
             return render(request,'errorPassage.html',{'error':form.errors})
     raise Http404        
 
+
 def vocab_from_history(request,typ):
     try:
         session_var = SessionVariables.objects.get(request_id=request.session['request_id'])
@@ -100,7 +101,7 @@ def vocab_from_history(request,typ):
         else:
             vocab_formset = initialize_vocab_formset(request.session['select_table'], request.session['glossary_dict'])
         return render(request,'vocabs.html',{'formset':vocab_formset,'name_form':name_form,'title':'Quiz for'})
-        
+
 
 def get_all_defs(request, gid):
     if request.method == 'POST':
@@ -117,6 +118,7 @@ def get_all_defs(request, gid):
         all_defs_got.send(sender=None, session_variable = session_var, request = request, lemmas = glossary['lemmas'])
         return render(request,'glossary_all_def.html',{'formset':glossary_formset,'concordance':concordance})
     raise Http404
+
 
 def change_defs(request):
     select_table = json.loads(request.body)['new_table']
@@ -149,6 +151,7 @@ def change_defs(request):
     defs_changed.send(sender=None, session_variable = session_var, request = request, lemmas = glossary_dict[select_table['gid']]['lemmas'])
     return render(request,'vocabs_entry.html',{'formset':vocab_formset})
 
+
 def add_lemma(request, gid):
     if json.loads(request.body)['lemma'] == '':
         return get_all_defs(request, gid)
@@ -168,7 +171,8 @@ def add_lemma(request, gid):
     
     lemma_added.send(sender=None, request = request, tokens = tokens, lemmas = glossary['lemmas'], lemma = json.loads(request.body)['lemma'])
     return get_all_defs(request, gid)
-   
+
+
 def get_pdf(request, order = 'difficulty'):
     if request.method == 'POST':
         VocabFormSet = formset_factory(VocabForm,extra=0)
@@ -210,7 +214,8 @@ def get_pdf(request, order = 'difficulty'):
         else:
             return render(request,'errorPdf.html',{'error':error,'texfile':rendered_tpl})
     raise Http404
-    
+
+
 def quiz(request):
     if request.method == 'POST':
         VocabFormSet = formset_factory(VocabForm,extra=0)
@@ -234,6 +239,7 @@ def quiz(request):
         quiz_created.send(sender=None,session_variable = session_var, request = request)
         return render(request,'vocabs.html',{'formset':vocab_formset,'name_form':name_form,'title':'Quiz for'})
     raise Http404        
+
 
 def quiz_pdf(request):
     if request.method != 'POST': raise Http404
@@ -308,7 +314,7 @@ def quiz_pdf(request):
             return render(request,'errorPdf.html',{'error':errorq+'\n'+errora,'texfile':rendered_tplq+'\n'+rendered_tpla})
     else:
         return render(request,'errorVocab.html',{'error':str(vocab_formset.errors)+'\n\n'+name_form.errors})
-        
+
 #////////////////////////////////////////////////////////////
 # Select Vocab 
 #////////////////////////////////////////////////////////////
@@ -324,7 +330,8 @@ def sort_select_table(glossary_dict, select_tabel, reverse = False):
                 temp =  select_tabel[j]
                 select_tabel[j] = select_tabel[j+1]
                 select_tabel[j+1]= temp
-                
+
+             
 def vocab_select(glossary_dict, dict_pref={'learner':1, 'collegiate':2}, show_cutoff = 4.3, diff_cutoff = 6):
     select_table = []
     for gid, glossary in glossary_dict.iteritems():
@@ -389,7 +396,8 @@ def group_select_table(glossary_dict, select_tabel):
         entry_pointer = EntryPointerQuery.objects.get(entry_id=entry['entry_id'])
         if entry_pointer == None: break
         entry['senses'] = entry_pointer.group_sense(entry['senses'] )
-                
+
+
 def select_table_from_vocabfm(vocab_formset, drop = False):
     vocabs = vocab_formset.cleaned_data
     select_table = []
@@ -468,7 +476,8 @@ def initialize_vocab_formset(select_table, glossary_dict):
                 })
     vocab_formset =VocabFormSet(initial=vocabs,prefix='vocab')
     return vocab_formset
-    
+
+
 def get_highlight_selection(glossary_dict, glossary, entry, sense, high_light):
     #if len(glossary_dict[str(glossary['gid'])]['pos_list']) >2 or high_light: return 'def_menu-highlight'
     if high_light: return 'def_menu-highlight'
@@ -504,6 +513,7 @@ def initialize_glossary_formset(request, gid):
     glossary_formset = GlossaryFormSet(initial=gi)
     return glossary_formset
 
+
 def get_selected_sense(request, glossary, gid, eid):
     request_id= json.loads(request.body)['request_id']
     session_var = SessionVariables.objects.get(request_id=request_id)   
@@ -518,7 +528,8 @@ def get_selected_sense(request, glossary, gid, eid):
             if selected_sense !='': selected_sense=selected_sense+','
             selected_sense = selected_sense + ','.join(sense for sense in def_['senses'])
     return selected_sense
-                
+
+
 def sort_glossary(glossary, gi, dict_pref={'learner':1, 'collegiate':2}):
     new_gi=[]
     dict_pref_list=list(dict_pref.keys())
@@ -583,6 +594,7 @@ def sort_glossary(glossary, gi, dict_pref={'learner':1, 'collegiate':2}):
 #////////////////////////////////////////////////////////////
 # Session Variables Management
 #////////////////////////////////////////////////////////////
+
 def update_session(request, session_var):
     if session_var.request_id != '':
         request.session['request_id']=session_var.request_id
@@ -596,7 +608,7 @@ def update_session(request, session_var):
         request.session['quiz_select_table']=pickle.loads(session_var.quiz_select_table)
     request.session.modified = True
     return 
-    
+
 #////////////////////////////////////////////////////////////
 # Generate Pdf
 #////////////////////////////////////////////////////////////
@@ -626,9 +638,11 @@ def generate_pdf(template_file,context):
 #////////////////////////////////////////////////////////////
 # Utilities 
 #////////////////////////////////////////////////////////////
+
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     import random
     return ''.join(random.choice(chars) for i in range(size))
+
 
 def html_decode(s):
     """
@@ -646,7 +660,8 @@ def html_decode(s):
     for code in htmlCodes:
         s = s.replace(code[1], code[0])
     return s
-    
+
+
 class TemporaryDirectory(object):
     """Create and return a temporary directory.  This has the same
     behavior as mkdtemp but can be used as a context manager.  For
@@ -726,6 +741,7 @@ class TemporaryDirectory(object):
             self._rmdir(path)
         except OSError:
             pass
+
 
 def zipf(files,zfname='quiz&answer'):
     with TemporaryDirectory() as dst:
