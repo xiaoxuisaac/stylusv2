@@ -11,7 +11,8 @@ urlpatterns = [
     url(r'^senses/(?P<gid>[0-9]*)/$', views.get_all_defs, name ='senses'),
     url(r'^changedefs/', views.change_defs, name ='change_defs'),
     url(r'^addlemma/(?P<gid>[0-9]*)/$', views.add_lemma, name ='add_lemma'),
-    url(r'^pdf/', views.get_pdf, name ='get_pdf'),    
+    url(r'^pdf/$', views.get_pdf, name ='get_pdf'),    
+    url(r'^pdf/(?P<order>[a-z,A-Z]*)/$', views.get_pdf),    
     url(r'^quiz/', views.quiz, name ='quiz'),    
     url(r'^quiz-pdf/', views.quiz_pdf, name ='quiz-pdf'), 
 ]

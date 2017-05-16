@@ -88,7 +88,20 @@
 			<p>Word Count: <span id='counter2'>0</span></p>	
 			<div class='pull-left vocab-submit'>
 				{% if title == 'Vocabulary in' %}
-				<input type="submit" value="Generate Glossary" name="_pdf" formaction="/pdf/"  class='btn btn-primary'/>
+				<div class="btn-group dropup">
+				  <input type="submit" value="Generate Glossary" name="_pdf" formaction="/pdf/"  class="btn btn-primary"/>
+				  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    <span class="caret"></span>
+				    <span class="sr-only">Toggle Dropdown</span>
+				  </button>
+				  <ul class="dropdown-menu">
+				    <!-- Dropdown menu links -->
+  				    <input id='submit_random' type="submit" value=" " name="_pdf" formaction="/pdf/random/"  hidden = true class="btn btn-primary"/>
+  				    <input id='submit_alphabetic' type="submit" value=" " name="_pdf" formaction="/pdf/alphabetic/" hidden = true  class="btn btn-primary"/>
+				    <li><a  onclick='$("#submit_random").click();'>Random Order</a></li>
+				    <li><a  onclick='$("#submit_alphabetic").click();'>Alphabetic Order</a></li>
+				  </ul>
+				</div>
 				
 				<input type="submit" value="Generate Quiz & Answer" name="_quiz" formaction="/quiz/"  class='btn btn-default'/>
 				{% endif %}

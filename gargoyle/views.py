@@ -10,6 +10,7 @@ from subprocess import Popen, PIPE
 import subprocess
 from tempfile import mkdtemp
 from random import shuffle
+import random
 import zipfile
 
 from django.shortcuts import render
@@ -168,8 +169,9 @@ def add_lemma(request, gid):
     lemma_added.send(sender=None, request = request, tokens = tokens, lemmas = glossary['lemmas'], lemma = json.loads(request.body)['lemma'])
     return get_all_defs(request, gid)
    
-def get_pdf(request):
+def get_pdf(request, order = 'difficulty'):
     if request.method == 'POST':
+        print order
         VocabFormSet = formset_factory(VocabForm,extra=0)
         vocab_formset = VocabFormSet(request.POST,prefix='vocab')
         name_form = NameForm(request.POST,prefix='name')
@@ -185,7 +187,12 @@ def get_pdf(request):
         request.session['select_table'] = select_table
         request.session.modified = True
         
-        shuffle(select_table)
+        if order == 'random':
+            r = random.random()
+            shuffle(select_table, lambda: r)
+        elif order == 'alphabetic':
+            glossary_dict = pickle.loads(session_var.glossary_dict)
+            select_table = sorted(select_table, key=lambda k: glossary_dict[k['gid']]['lemmas'][0].lower())
         
         vocab_formset = initialize_vocab_formset(select_table,pickle.loads(session_var.glossary_dict))
         context = {'vocab_formset':vocab_formset,'name_form':name_form}
