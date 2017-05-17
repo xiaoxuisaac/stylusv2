@@ -46,15 +46,27 @@ def feedback(request):
         return render(request,'comment.html',{'comment_form':CommentForm()})
 
 
-def vocab(request):
+def vocab(request,prepare='n'):
     if request.method == 'POST':# and '_text' in request.POST:
         form = PassageForm(request.POST)
         if form.is_valid():
             #////Constructing Name Form//////////////
-            name='Untitled' if form.cleaned_data['name'] ==  '' else form.cleaned_data['name']             
-            request_id = '|'.join([request.user.get_username(),datetime.date.today().isoformat(),name,id_generator()])
+            name='Untitled' if form.cleaned_data['name'] ==  '' else form.cleaned_data['name']
+            if form.cleaned_data['request_id'] ==  '':             
+                request_id = '|'.join([request.user.get_username(),datetime.date.today().isoformat(),name,id_generator()])
+            else:
+                request_id = form.cleaned_data['request_id']
             name_form = NameForm(initial={'name':name,'project':'Homer Project','request_id':request_id},prefix='name')
 
+            #////If retrieving data by request_id//////////////
+            session_var, created = SessionVariables.objects.get_or_create(request_id=request_id)
+            if (not created) and prepare != 'p':
+                update_session(request, session_var)
+                glossary_dict = request.session['glossary_dict']
+                select_table = request.session['initial_select_table']
+                vocab_formset = initialize_vocab_formset(select_table, glossary_dict)
+                return render(request,'vocabs.html',{'formset':vocab_formset,'name_form':name_form,'title':'Vocabulary in'})
+                
             #////Constructing Vocab Form/////////////                
             content = form.cleaned_data['content']
             glossary_dict, tokens = analyze(content)
@@ -62,7 +74,6 @@ def vocab(request):
             vocab_formset = initialize_vocab_formset(select_table, glossary_dict)
             
             #////Storing Session Variables///////////
-            session_var = SessionVariables(request_id=request_id)   
             #session_var.select_table = pickle.dumps(select_table)
             session_var.initial_select_table = pickle.dumps(select_table)
             session_var.glossary_dict = pickle.dumps(glossary_dict)
@@ -76,12 +87,15 @@ def vocab(request):
             request.session.modified = True
             
             text_analyzed.send(sender=None, session_variable = session_var, request = request, text = content)
+            if prepare == 'p':
+                return HttpResponse(request_id)
+            
             return render(request,'vocabs.html',{'formset':vocab_formset,'name_form':name_form,'title':'Vocabulary in'})
         else:
             return render(request,'errorPassage.html',{'error':form.errors})
     raise Http404        
 
-
+     
 def vocab_from_history(request,typ):
     try:
         session_var = SessionVariables.objects.get(request_id=request.session['request_id'])

@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html>
  <head>
      <meta charset="utf-8">
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -50,7 +52,9 @@
 	<form method="post" style="position:relative;margin-top:20px;">
 		<div class="form-group">
    			{% csrf_token %}
-  	 		{{ passage_form.as_p }}
+			<p><label>{{passage_form.name.label}}</label>{{passage_form.name}}</p>
+			{{passage_form.request_id}}
+			<p><label>{{passage_form.content.label}}</label>{{passage_form.content}}</p>
   			<input id='id_sumbit'type="submit" name='_text' value="Generate Glossarys" class='btn btn-default csv-text'style='min-width:143px;margin-bottom:5px;display:none;' formaction="/vocab/" />
             <label id = 'submit_label' onclick="load()" class='btn-default btn' style='margin-bottom:5px;'>Generate Glossary</label>
             <button onclick="upload_analyze()" id='choose-file' class='btn-default btn' style='margin-bottom:5px;'>Upload PDF</button>
@@ -82,10 +86,29 @@
 <script>
 	 function load(){
  		$("#loading").css('display', 'inline-block');
-		setTimeout(function() {
-		    console.log('STYLUS!');
-		}, 300);
-		$('#id_sumbit').click();
+		var csrf = $('[name="csrfmiddlewaretoken"]').val();
+		var fd = new FormData($('form')[0]);
+        $.ajax({
+			headers: { "X-CSRFToken": csrf },
+            url: '/vocab/p/',
+            type: 'POST',
+            success: function(data, status){
+				if(data.length < 101){
+					$('#id_request_id').attr('value',data);
+				}
+				$('#id_sumbit').click();
+            },
+			error: function (jqXHR, exception) {
+				concole.log('error');
+				$('#id_sumbit').click();
+			},
+            data:fd,
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+		
+		
 	 }
 	 
 	 function fromcvs(){
@@ -145,7 +168,8 @@ Array.prototype.forEach.call( inputs, function( input )
                 data:fd,
                 cache: false,
                 contentType: false,
-                processData: false
+                processData: false,
+				async: false
             });
         }
         else {
@@ -154,3 +178,5 @@ Array.prototype.forEach.call( inputs, function( input )
 	});
 });
 </script>
+</html>
+

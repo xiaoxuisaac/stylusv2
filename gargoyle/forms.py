@@ -9,6 +9,7 @@ from .widgets import TextDiv, DefMenuIcon, DictLogo
 
 class PassageForm(forms.Form):
     name = forms.CharField(required=False,label="Text Name",max_length=100,widget=forms.TextInput(attrs={'class':'form-control text-name'}))
+    request_id = forms.CharField(required=False,max_length=100,widget=forms.TextInput(attrs={'hidden':'true'}))
     content = forms.CharField(label="Text Content", max_length=1000000,widget=forms.Textarea(attrs={'class':'form-control project-name','rows':17, 'id':'home-content'}))
 
 class NameForm(forms.Form):
