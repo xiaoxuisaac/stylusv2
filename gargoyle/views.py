@@ -52,7 +52,7 @@ def vocab(request,prepare='n'):
         if form.is_valid():
             #////Constructing Name Form//////////////
             name='Untitled' if form.cleaned_data['name'] ==  '' else form.cleaned_data['name']
-            if form.cleaned_data['request_id'] ==  '':             
+            if form.cleaned_data['request_id'] ==  '' or prepare == 'pid':             
                 request_id = '|'.join([request.user.get_username(),datetime.date.today().isoformat(),name,id_generator()])
             else:
                 request_id = form.cleaned_data['request_id']
