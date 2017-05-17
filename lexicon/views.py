@@ -42,7 +42,7 @@ def _lemma_dict(token):
         cluster.append(w.headword)
     return cluster
         
-def _lemma(token):
+def _lemma_internal(token):
     cluster = []
     try:
         wp = WordPointer.objects.get(word=token.lower())
@@ -52,12 +52,12 @@ def _lemma(token):
         cluster.append(w.word)
     return cluster
     
-def lemma(tokens):
+def lemma(tokens, session_var = None):
     if isinstance(tokens, basestring):
         token = tokens.lower()
         cluster = []
         if tokens not in cluster: 
-            cluster.extend(_lemma(token))
+            cluster.extend(_lemma_internal(token))
         if False and tokens not in cluster: 
             cluster.extend(_lemma_coca(token))
         if cluster == [] and new_word(token): 
@@ -69,12 +69,18 @@ def lemma(tokens):
         dictlist=[]
         for key, value in tokens.iteritems():
             dictlist.append(key)
-        return lemma(dictlist)    
+        return lemma(dictlist, session_var)    
         
     cluster = []
+    total = len(tokens)
+    unit = int(total/50)
+    if unit == 0: unit  = 1
     for i,token in enumerate(tokens):
         #print cluster
         #print token
+        if i % unit == 0 and session_var != None:
+            session_var.progress += unit*1.0/total*100*0.35
+            session_var.save()
         print i
         flag = True
         if stop_word(token):
@@ -214,20 +220,28 @@ def glossary_filter(g):
         if 'NNP' in pos: return False
     return True
 
-def glossary_wrapper(tokens_list, text,pos_dict={}):
+def glossary_wrapper(tokens_list, text,pos_dict={}, session_var = None):
     glossary_dict = {}
+    total = len(tokens_list)
+    unit = int(total/50)
+    print unit, total
+    if unit == 0: unit  = 1
     for n, tokens in enumerate(tokens_list):
             g = Glossary(tokens,text,gid=n, pos_dict=pos_dict)
             if glossary_filter(g):                
                 glossary_dict[str(n)]=g.serialize()
             print n
+            if n % unit == 0 and session_var != None:
+                session_var.progress += unit*1.0/total*100*0.65
+                session_var.save()
+                
     return glossary_dict   
  
 #////////////////////////////////////////////////////////////
 # Text Analyze 
 #////////////////////////////////////////////////////////////
 
-def analyze(text):
+def analyze(text, session_var = None):
     punctuation = { 0x2018:0x27, 0x2019:0x27, 0x201C:0x22, 0x201D:0x22,}
 #                    0x5be:0x2d,0x1806:0x2d,0x2010:0x2d,0x2011:0x2d,0x2012:0x2d,
 #                    0x2013:0x2d,0x2014:0x2d,0x2015:0x2d,
@@ -250,7 +264,7 @@ def analyze(text):
         pos_dict[pos[0]] = pos_dict[pos[0]] + [pos[1]]
     text = Text(tokens)
     vocab = text.vocab()
-    tokens_list = lemma(vocab)
-    glossary_dict = glossary_wrapper(tokens_list,text,pos_dict)
+    tokens_list = lemma(vocab, session_var=session_var)
+    glossary_dict = glossary_wrapper(tokens_list,text,pos_dict, session_var=session_var)
     return glossary_dict, tokens
     

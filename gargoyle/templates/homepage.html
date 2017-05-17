@@ -56,7 +56,7 @@
 			{{passage_form.request_id}}
 			<p><label>{{passage_form.content.label}}</label>{{passage_form.content}}</p>
   			<input id='id_sumbit'type="submit" name='_text' value="Generate Glossarys" class='btn btn-default csv-text'style='min-width:143px;margin-bottom:5px;display:none;' formaction="/vocab/" />
-            <button type="button" id = 'submit_label' onclick="load()" class='btn-default btn' style='margin-bottom:5px;'>Generate Glossary</button>
+            <button type="button" id = 'submit_label' onclick="fill_id()" class='btn-default btn' style='margin-bottom:5px;'>Generate Glossary</button>
             <button type="button" onclick="upload_analyze()" id='choose-file' class='btn-default btn' style='margin-bottom:5px;'>Upload PDF</button>
             <span id='word-download' style='display:none;margin-left:7px;position:absolute;margin-top:7px;'><a href='/' target='_blank'><i class="fa fa-file-word-o" style="font-size:1.5em;" aria-hidden="true"></i></a></span>
 			
@@ -83,30 +83,59 @@
 
 </div>
 <div class="container-fluid home-container" style ='margin-top:0px;'>
-	<div id='loading' style='display:none; margin-left:25px;padding-top:5px;'>
+	<div id='loading1' style='display:none; margin-left:25px;padding-top:5px;'>
 		<img src='../static/assets/img/loading-circle.gif' height='24' style='padding-bottom:2px;'> Analyzing... This may take up to 40 seconds.
 	</div>
-
+	<div id='loading' class="progress" hidden = 'true'>
+	  <div id = 'progress_data' class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+	</div>
 </div>
 
 			
 
 <script>
+	 function fill_id(){
+ 		var csrf = $('[name="csrfmiddlewaretoken"]').val();
+ 		var fd = new FormData($('form')[0]);
+         $.ajax({
+ 			headers: { "X-CSRFToken": csrf },
+             url: '/vocab/pid/',
+             type: 'POST',
+             success: function(data, status){
+				 if(data.length < 101){
+ 					$('#id_request_id').attr('value',data);
+ 				}
+ 				load();
+             },
+ 			error: function (jqXHR, exception) {
+ 				concole.log('error');
+ 				$('#id_sumbit').click();
+ 			},
+             data:fd,
+             cache: false,
+             contentType: false,
+             processData: false
+         });
+	}
+	
 	 function load(){
- 		$("#loading").css('display', 'inline-block');
+ 		$("#loading").attr('hidden', false);
 		var csrf = $('[name="csrfmiddlewaretoken"]').val();
 		var fd = new FormData($('form')[0]);
+		var progress = true		
         $.ajax({
 			headers: { "X-CSRFToken": csrf },
-            url: '/vocab/p/',
+            url: '/vocab/prepare/',
             type: 'POST',
             success: function(data, status){
+				progress = false;
 				if(data.length < 101){
 					$('#id_request_id').attr('value',data);
 				}
 				$('#id_sumbit').click();
             },
 			error: function (jqXHR, exception) {
+				progress = false
 				concole.log('error');
 				$('#id_sumbit').click();
 			},
@@ -116,7 +145,22 @@
             processData: false
         });
 		
+		var freq = 300;
 		
+		function update_progress(){
+			$.get("{% url 'progress' %}?request_id="+$('#id_request_id').val(), function(data, status){
+				setTimeout(function(){ 
+					$('#progress_data').css('width',data+'%');
+					$('#progress_data').attr('aria-valuenow',data);
+				}, freq);
+			});
+			if (progress){
+				setTimeout(update_progress,freq);
+			}
+		}
+		
+		setTimeout(update_progress,freq);
+				
 	 }
 	 
 	 function fromcvs(){

@@ -48,6 +48,7 @@ class SessionVariables(models.Model):
     initial_select_table = models.TextField(blank=True, null=True)
     select_table = models.TextField(blank=True, null=True)
     quiz_select_table = models.TextField(blank=True, null=True)
+    progress = models.FloatField(blank=True, null=True,default=0)
     def save(self, *args, **kwargs):
         self.saved_date = timezone.now()
         super(SessionVariables, self).save(*args, **kwargs)
