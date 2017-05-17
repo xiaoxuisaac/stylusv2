@@ -96,6 +96,8 @@
 <script>
 	 function fill_id(){
 		$('#id_request_id').attr('value','');
+		$('#progress_data').css('width','0%');
+		$('#progress_data').attr('aria-valuenow',0);
  		var csrf = $('[name="csrfmiddlewaretoken"]').val();
  		var fd = new FormData($('form')[0]);
          $.ajax({
