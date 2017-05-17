@@ -95,6 +95,7 @@
 
 <script>
 	 function fill_id(){
+		$('#id_request_id').attr('value','');
  		var csrf = $('[name="csrfmiddlewaretoken"]').val();
  		var fd = new FormData($('form')[0]);
          $.ajax({
