@@ -73,13 +73,13 @@ def lemma(tokens, session_var = None):
         
     cluster = []
     total = len(tokens)
-    unit = int(total/50)
+    unit = int(total/20)
     if unit == 0: unit  = 1
     for i,token in enumerate(tokens):
         #print cluster
         #print token
         if i % unit == 0 and session_var != None:
-            session_var.progress += unit*1.0/total*100*0.35
+            session_var.progress += unit*1.0/total*100*0.32
             session_var.save()
         print i
         flag = True
@@ -223,7 +223,7 @@ def glossary_filter(g):
 def glossary_wrapper(tokens_list, text,pos_dict={}, session_var = None):
     glossary_dict = {}
     total = len(tokens_list)
-    unit = int(total/50)
+    unit = int(total/30)
     print unit, total
     if unit == 0: unit  = 1
     for n, tokens in enumerate(tokens_list):
