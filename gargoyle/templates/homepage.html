@@ -56,12 +56,10 @@
 			{{passage_form.request_id}}
 			<p><label>{{passage_form.content.label}}</label>{{passage_form.content}}</p>
   			<input id='id_sumbit'type="submit" name='_text' value="Generate Glossarys" class='btn btn-default csv-text'style='min-width:143px;margin-bottom:5px;display:none;' formaction="/vocab/" />
-            <label id = 'submit_label' onclick="load()" class='btn-default btn' style='margin-bottom:5px;'>Generate Glossary</label>
-            <button onclick="upload_analyze()" id='choose-file' class='btn-default btn' style='margin-bottom:5px;'>Upload PDF</button>
+            <button type="button" id = 'submit_label' onclick="load()" class='btn-default btn' style='margin-bottom:5px;'>Generate Glossary</button>
+            <button type="button" onclick="upload_analyze()" id='choose-file' class='btn-default btn' style='margin-bottom:5px;'>Upload PDF</button>
             <span id='word-download' style='display:none;margin-left:7px;position:absolute;margin-top:7px;'><a href='/' target='_blank'><i class="fa fa-file-word-o" style="font-size:1.5em;" aria-hidden="true"></i></a></span>
-			<div id='loading' style='display:none; margin-left:25px;padding-top:5px;'>
-				<img src='../static/assets/img/loading-circle.gif' height='24' style='padding-bottom:2px;'> Analyzing... This may take up to 40 seconds.
-			</div>
+			
 		</div>
 	</form>
 	
@@ -80,8 +78,18 @@
 			<a href='/feedback' target='_blank' class='logo' id='home-feedback' style="margin-right:3px;">feedback</a> 
 		</h5>	
 	</div>
+	
 	<div style='position:absolute;'><p id='ocr-notice'></p></div>
+
 </div>
+<div class="container-fluid home-container" style ='margin-top:0px;'>
+	<div id='loading' style='display:none; margin-left:25px;padding-top:5px;'>
+		<img src='../static/assets/img/loading-circle.gif' height='24' style='padding-bottom:2px;'> Analyzing... This may take up to 40 seconds.
+	</div>
+
+</div>
+
+			
 
 <script>
 	 function load(){
@@ -147,11 +155,14 @@ Array.prototype.forEach.call( inputs, function( input )
         if(fileName != ''){
             label.text(fileName.substring(0,30));
             var fileName_c=fileName.replace(/\.[a-z,A-Z,0-9]+/g,'');
+			console.log(fileName_c);
             $('#id_name').val(fileName_c.substring(0,30));
             $('#submit_label').html('Analyzing...');
             $('#submit_label').prop('disabled',true);
             var fd = new FormData($('form')[1]);
+			var csrf = $('[name="csrfmiddlewaretoken"]').val();
             $.ajax({
+				headers: { "X-CSRFToken": csrf },
                 url: '/ocr/',
                 type: 'POST',
                 success: function(data, status){
@@ -162,14 +173,12 @@ Array.prototype.forEach.call( inputs, function( input )
                     $('#word-download').find('a').attr('href',data['url']);
                     $('#word-download').show();
                 }
-                $('#ocr-notice').html(data['notice'])
-                
-                },
+                $('#ocr-notice').html(data['notice']);
+			},
                 data:fd,
                 cache: false,
                 contentType: false,
                 processData: false,
-				async: false
             });
         }
         else {
