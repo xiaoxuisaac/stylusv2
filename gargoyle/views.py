@@ -70,7 +70,6 @@ def vocab(request,prepare='n'):
                 glossary_dict = request.session['glossary_dict']
                 select_table = request.session['initial_select_table']
                 vocab_formset = initialize_vocab_formset(select_table, glossary_dict)
-                print select_table
                 session_var.initial_select_table = pickle.dumps(select_table)
                 session_var.select_table = pickle.dumps(select_table)
                 session_var.save()
@@ -513,7 +512,6 @@ def initialize_vocab_formset(select_table, glossary_dict):
                     'sentence_custom':vi,
                 })
     vocab_formset =VocabFormSet(initial=vocabs,prefix='vocab')
-    print select_table
     return vocab_formset
 
 
