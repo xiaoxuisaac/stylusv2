@@ -68,10 +68,10 @@ def vocab(request,prepare='n'):
             if session_var.glossary_dict != None and prepare != 'prepare':
                 update_session(request, session_var)
                 glossary_dict = request.session['glossary_dict']
-                select_table = request.session['initial_select_table']
+                select_table = request.session['select_table']
+
                 vocab_formset = initialize_vocab_formset(select_table, glossary_dict)
                 session_var.initial_select_table = pickle.dumps(select_table)
-                session_var.select_table = pickle.dumps(select_table)
                 session_var.save()
                 update_session(request, session_var)
                 return render(request,'vocabs.html',{'formset':vocab_formset,'name_form':name_form,'title':'Vocabulary in'})            
@@ -101,7 +101,6 @@ def vocab(request,prepare='n'):
             
             vocab_formset = initialize_vocab_formset(select_table, glossary_dict)
             session_var.initial_select_table = pickle.dumps(select_table)
-            session_var.select_table = pickle.dumps(select_table)
             session_var.save()
             update_session(request, session_var)
             return render(request,'vocabs.html',{'formset':vocab_formset,'name_form':name_form,'title':'Vocabulary in'})
@@ -444,7 +443,7 @@ def select_table_from_vocabfm(vocab_formset, drop = False):
         entry_id = vocab['entry_id']
         sense_id = vocab['sense_id']
         selected = vocab['selected']
-        print vocab['highlight_selection'] 
+        highlight = vocab['highlight'] == 'True'
         for glossary in select_table:
             if glossary['gid'] == str(gid):
                 new_glossary = False
@@ -456,7 +455,7 @@ def select_table_from_vocabfm(vocab_formset, drop = False):
                 if new_entry:
                     glossary['defs'].append({'entry_id':entry_id, 'senses':[sense_id]})
         if new_glossary:
-            select_table.append({'gid':str(gid),'selected':False,'defs':[{'entry_id':entry_id, 'senses':[sense_id]}]})
+            select_table.append({'gid':str(gid),'selected':False,'highlight':highlight,'defs':[{'entry_id':entry_id, 'senses':[sense_id]}]})
     
     for vocab in vocabs:
         new_glossary = True
@@ -503,6 +502,7 @@ def initialize_vocab_formset(select_table, glossary_dict):
                     'gid':glossary['gid'],
                     'entry_id':entry['entry_id'],
                     'highlight_selection': get_highlight_selection(glossary_dict, glossary, entry, sense, high_light or g_highligh),
+                    'highlight':high_light or g_highligh,
                     'sense_id':sense,
                     'word':entry_pointer.headword,
                     'difficulty': round(glossary_dict[str(glossary['gid'])]['difficulty'],1),
@@ -640,7 +640,7 @@ def update_session(request, session_var):
     if session_var.select_table != None:
         request.session['select_table']=pickle.loads(session_var.select_table)
     elif session_var.initial_select_table != None:
-        request.session['initial_select_table']=pickle.loads(session_var.initial_select_table)
+        request.session['select_table']=pickle.loads(session_var.initial_select_table)
     if session_var.quiz_select_table != None:
         request.session['quiz_select_table']=pickle.loads(session_var.quiz_select_table)
     request.session.modified = True

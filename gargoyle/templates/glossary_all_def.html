@@ -232,6 +232,9 @@
 				update_id();
 				$('#defs_modal-content').html('');
             },
+			error: function (jqXHR, exception) {
+				$('#defs_modal-content').html('<div class="modal-body glossary-modal">Error. Please refresh the page and retry. If the error persists, please <a href="{% url "feedback" %}">contact us</a></div>');
+			},
             data:JSON.stringify({"new_table":{'request_id': request_id, "gid":gid, "defs":defs},"type":type}),
             cache: false,
             contentType: false,

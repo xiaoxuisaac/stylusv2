@@ -2,9 +2,6 @@
 {% for form in formset %} 
 	<tr>
 		<td class='vocab-{{form.selected.name}}'>{{form.selected}}</td>
-		<td class='vocab-{{form.gid.name}}'>{{form.gid}}</td>
-		<td class='vocab-{{form.entry_id.name}}'>{{form.entry_id}}</td>
-		<td class='vocab-{{form.sense_id.name}}'>{{form.sense_id}}</td>
 		<td class='vocab-{{form.word.name}}'>{{form.word}}</td>
 		<td class='vocab-{{form.difficulty.name}}'>{{form.difficulty}}</td>
 		<td class='vocab-{{form.highlight_selection.name}}'>{{form.highlight_selection}}</td>
@@ -12,6 +9,10 @@
 		<td class='vocab-{{form.dict_def.name}}'>{{form.dict_def|web_def|safe}}</td>
 		<td class='vocab-{{form.sentence.name}}'>{{form.sentence|web_def|safe}}</td>
 		<td class='vocab-{{form.sentence_custom.name}}'>{{form.sentence_custom}}</td>
+		<td class='vocab-{{form.gid.name}}'>{{form.gid}}</td>
+		<td class='vocab-{{form.entry_id.name}}'>{{form.entry_id}}</td>
+		<td class='vocab-{{form.sense_id.name}}'>{{form.sense_id}}</td>
+		<td class='vocab-{{form.highlight.name}}'>{{form.highlight}}</td>
 	</tr>
 {% endfor %}
 			
