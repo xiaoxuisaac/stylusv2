@@ -35,7 +35,7 @@ class VocabForm(forms.Form):
     gid = forms.IntegerField(required=True,widget=forms.HiddenInput(attrs={'class':'input-gid'}))
     entry_id = forms.CharField(required=True,widget=forms.HiddenInput(attrs={'class':'input-entry_id'}))
     sense_id = forms.CharField(required=True,widget=forms.HiddenInput(attrs={'class':'input-sense_id'}))
-    highlight = forms.CharField(required=True,widget=forms.HiddenInput(attrs={'class':'input-highlight'}))
+    highlight = forms.CharField(required=True, initial= 'False',widget=forms.HiddenInput(attrs={'class':'input-highlight'}))
     
     word = forms.CharField(widget=TextDiv(attrs={'class':'input-word text-select'}))
     difficulty = forms.DecimalField(max_digits=4, decimal_places=2,widget=TextDiv(attrs={'class':'input-difficulty text-select'}))
