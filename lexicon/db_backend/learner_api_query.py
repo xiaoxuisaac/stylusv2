@@ -30,7 +30,7 @@ def add_learner(word):
     #print created
     added = False
     if(created or raw.data == ''):
-        print("New Word from Learner Website: "+word)
+        print(u"New Word from Learner Website: "+word)
         response = urllib2.urlopen('http://www.dictionaryapi.com/api/v1/references/learners/xml/'
               +word.encode('utf-8')+'?key=40d96316-f219-4661-893b-62df83769d28')
 
