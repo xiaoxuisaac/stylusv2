@@ -28,7 +28,7 @@ def add_collegiate(word):
     added = False
     raw, created = CollegiateRaw.objects.get_or_create(alpha=word.lower())
     if(created or raw.data == ''):
-        print("New Word from Collegiate Website: "+word.decode('utf-8'))
+        print("New Word from Collegiate Website: "+word.encode('utf-8'))
         response = urllib2.urlopen('http://www.dictionaryapi.com/api/v1/references/collegiate/xml/'
               +word.encode('utf-8')+'?key=11f82c71-15d3-4d60-ba76-6c2a62b57a0a')
         try:
