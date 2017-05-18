@@ -112,6 +112,10 @@
 			<div style='margin-top:5px;'>
 				<p>(hint: <a href = {% url 'login' %} target='_blank'>login</a> to store your glossaries and quizzes.)</p>
 			</div>
+			{% else %}
+			<div style='margin-top:5px;'>
+				<p>(hint: generated glossaries and quizzes are saved in your <a href = {% url 'profile' %} target='_blank'>profile</a> page)</p>
+			</div>
 			{% endif %}    
 			</div>
 			</form>
