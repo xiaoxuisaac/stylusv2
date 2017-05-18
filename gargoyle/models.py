@@ -15,11 +15,13 @@ import copy
 import re
 import os
 
+
 class Comment(models.Model):
     day = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=30,blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     content = models.CharField(max_length=10000)
+
 
 class TempFile(models.Model):
     saved_date = models.DateTimeField(editable=False, default=timezone.now)
@@ -33,12 +35,17 @@ def _delete_file(path):
    if os.path.isfile(path):
        os.remove(path)
 
+
 @receiver(models.signals.post_delete, sender=TempFile)
 def delete_file(sender, instance, *args, **kwargs):
     """ Deletes image files on `post_delete` """
     if instance.upload:
         _delete_file(instance.upload.path)
-        
+
+#class VocabPreference(models.Model):
+#    owner = models.ForeignKey(Profile, blank=True, null=True, related_name='vocab_preference')
+    
+    
 class SessionVariables(models.Model):
     request_id = models.CharField(max_length=125, primary_key=True)
     saved_date = models.DateTimeField(editable=True, default=timezone.now)
@@ -52,6 +59,7 @@ class SessionVariables(models.Model):
     def save(self, *args, **kwargs):
         self.saved_date = timezone.now()
         super(SessionVariables, self).save(*args, **kwargs)
+
 
 class EntryPointerQuery(EntryPointer):
     class Meta:
@@ -234,13 +242,15 @@ class EntryPointerQuery(EntryPointer):
                 else:
                     new_senses.append(str(sense))                    
         return new_senses
-        
+
+
 def stringify_children(node, ignore_tags=[]):
     parts = [node.text if node.text else None]
     for c in node.getchildren():
         if c.tag in ignore_tags: break
         parts.append(tostring(c,encoding='unicode'))
     return ''.join(filter(None, parts))
+
     
 def stringify_learner_def(node):
     ignore_tags=['vi','un','snote','wsgram','dx']

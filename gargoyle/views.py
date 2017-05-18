@@ -70,6 +70,11 @@ def vocab(request,prepare='n'):
                 glossary_dict = request.session['glossary_dict']
                 select_table = request.session['initial_select_table']
                 vocab_formset = initialize_vocab_formset(select_table, glossary_dict)
+                print select_table
+                session_var.initial_select_table = pickle.dumps(select_table)
+                session_var.select_table = pickle.dumps(select_table)
+                session_var.save()
+                update_session(request, session_var)
                 return render(request,'vocabs.html',{'formset':vocab_formset,'name_form':name_form,'title':'Vocabulary in'})            
             
             #////Constructing Vocab Form/////////////                
@@ -96,6 +101,10 @@ def vocab(request,prepare='n'):
                 return HttpResponse(request_id)
             
             vocab_formset = initialize_vocab_formset(select_table, glossary_dict)
+            session_var.initial_select_table = pickle.dumps(select_table)
+            session_var.select_table = pickle.dumps(select_table)
+            session_var.save()
+            update_session(request, session_var)
             return render(request,'vocabs.html',{'formset':vocab_formset,'name_form':name_form,'title':'Vocabulary in'})
         else:
             return render(request,'errorPassage.html',{'error':form.errors})
@@ -504,6 +513,7 @@ def initialize_vocab_formset(select_table, glossary_dict):
                     'sentence_custom':vi,
                 })
     vocab_formset =VocabFormSet(initial=vocabs,prefix='vocab')
+    print select_table
     return vocab_formset
 
 
