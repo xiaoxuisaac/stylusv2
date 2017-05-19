@@ -14,9 +14,9 @@ def tex(value):
 def tex_def(value):
     value = value.replace('<dt>', ' \iffalse <dt>\\fi ').replace('</dt>', ' \iffalse </dt>\\fi ')
     value = value.replace('<un>', ' -\iffalse <un>\\fi ').replace('</un>', ' \iffalse </un>\\fi ')
-    value = value.replace('<aq>', ' -\iffalse <aq>\\fi ').replace('</aq>', ' \iffalse </aq>\\fi ')
+    value = value.replace('<aq>', ' - ').replace('</aq>', ' ')
     value = value.replace('<fw>', ' \iffalse <fw>\\fi ').replace('</fw>', ' \iffalse </fw>\\fi ')
-    value = value.replace('<phrase>', ' \iffalse <phrase>\\fi ').replace('</phrase>', ' \iffalse </phrase>\\fi ')
+    value = value.replace('<phrase>', ' ').replace('</phrase>', ' ')
     value = value.replace('<d\_link>', ' \iffalse <d\_link>\\fi ').replace('</d\_link>', ' \iffalse </d\_link>\\fi ')    
     value = value.replace('<sx>', ' \\textsc{ ').replace('</sx>', '} ')
     value = value.replace('<sn>', ' \\textbf{ ').replace('</sn>', '.} ')
