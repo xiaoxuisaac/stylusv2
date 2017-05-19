@@ -1,12 +1,22 @@
 {% load i18n %}{% autoescape off %}
 Hi {{ profile.user.get_username }},
 
-Thank you very much for being a user of Stylus! We are here to excitedly launch a new update of Stylus, including over more than 50 new functions. In 
+Thank you for being a user of Stylus! We are here to excitedly launch a new update of Stylus, including over more than 20 new functions. In the new version, Stylus is able to
+	
+	· select different definitions for a word
+	· auto-select the right part of speech of a word based on the text
+	· store and retrieve generated vocabularies, quizzes and OCRed PDF's
+	· rank your preference of dictionaries in the profile page
+	· alphebatically order the glossary
+	· more functions to be discovered by you!
+	
+To access the new Stylus, please visit the following link to reset your password. 
 {% block reset_link %}
 http://stylus.academechina.com{{profile.pwd_reset_link}}
 {% endblock %}
-{% trans "Your username, in case you've forgotten:" %} {{ profile.user.get_username }}
 
-{% trans "Thanks for using our site!" %}
+If you have any suggestion, don't hesitate to  <a href='http://stylus.academechina.com{% url 'feedback'%}'>contact us</a>, reply this email or talk to us @Wechat: xiaoxuisaac. 
 
-{% endautoescape %}
+Sincerely,
+
+Stylus Team
