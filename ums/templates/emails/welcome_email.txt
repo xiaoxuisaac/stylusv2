@@ -20,3 +20,5 @@ If you have any suggestion, don't hesitate to  <a href='http://stylus.academechi
 Sincerely,
 
 Stylus Team
+
+{% endautoescape %}
