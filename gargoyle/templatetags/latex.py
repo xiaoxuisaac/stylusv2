@@ -22,6 +22,7 @@ def tex_def(value):
     value = value.replace('<dx>', ' \iffalse <dx>').replace('</dx>', '</dx>\\fi ')
     value = value.replace('<vi>', ' \iffalse <vi>').replace('</vi>', '</vi>\\fi ')
     value = value.replace('<synref>', ' \iffalse <synref>\\fi ').replace('</synref>', ' \iffalse </synref>\\fi ')
+    value = value.replace('<ca>', ' \iffalse <ca>\\fi ').replace('</ca>', ' \iffalse </ca>\\fi ')
     return value
     
 def tex_pos(value):
