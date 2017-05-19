@@ -7,7 +7,23 @@
  	<form method="post" style="position:relative;margin-top:20px;">
  		<div class="form-group">
     			{% csrf_token %}
-	{{vocab_preference_form.as_p}}
+	<p>
+	<label>{{vocab_preference_form.show_cutoff.label}}</label>
+	{{vocab_preference_form.show_cutoff}}
+	</p>
+	<p>
+	<label>{{vocab_preference_form.diff_cutoff.label}}</label>
+	{{vocab_preference_form.diff_cutoff}}
+	</p>
+	<h4 style='margin-top:20px;'>Dictionaries Preference Order</h4>
+	<p>
+	<label>{{vocab_preference_form.learner_pref.label}}</label>
+	{{vocab_preference_form.learner_pref}}
+	</p>
+	<p>
+	<label>{{vocab_preference_form.webster_pref.label}}</label>
+	{{vocab_preference_form.webster_pref}}
+	</p>
             <button type="button" id = 'submit_label' onclick="submit_pref()" class='btn-default btn' style='margin-bottom:5px;'>Save</button>
 			
 
