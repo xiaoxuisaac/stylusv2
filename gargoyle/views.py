@@ -339,9 +339,9 @@ def quiz_pdf(request):
         qquiz, errorq, rendered_tplq = generate_pdf('quiz.tex', context)
         answer, errora, rendered_tpla = generate_pdf('answer.tex', context)
         if(qquiz!=None and answer!=None):
-            z=zipf([{'name':name_form.name+'_quiz.pdf','file':qquiz},{'name':name_form.name+'_answer.pdf','file':answer}])
+            z=zipf([{'name':name_form['name']+'_quiz.pdf','file':qquiz},{'name':name_form['name']+'_answer.pdf','file':answer}])
             response = HttpResponse(z, content_type='application/force-download')
-            filename=name_form.name+'_quiz&answer'+id_generator(3)+'.zip'
+            filename=name_form['name']+'_quiz&answer'+id_generator(3)+'.zip'
             response['Content-Disposition'] = 'attachment; filename="%s"' % filename
             
             pdf_created.send(sender=QUIZ_PDF,session_variable = session_var, request = request)
