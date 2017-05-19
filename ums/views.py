@@ -133,3 +133,15 @@ def delete_vocab(request):
              variables.save()
              break
     return profile(request,load_url='vocab_history')
+    
+@user_passes_test(lambda u: u.is_authenticated())
+def preference(request):
+    from gargoyle.forms import VocabPreferenceForm
+    from gargoyle.models import VocabPreference
+    if request.method == 'POST':
+        vocab_preference_form = VocabPreferenceForm(request.POST,instance=request.user.profile.vocab_preference, prefix="vocab")
+        if vocab_preference_form.is_valid():
+            vocab_preference_form.save()
+        return render(request,'preference_lean.html',{'vocab_preference_form':vocab_preference_form})
+    vocab_preference_form = VocabPreferenceForm(instance=request.user.profile.vocab_preference, prefix="vocab")
+    return render(request,'preference_lean.html',{'vocab_preference_form':vocab_preference_form})

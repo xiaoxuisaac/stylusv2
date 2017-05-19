@@ -125,7 +125,7 @@ def new_word(token, force_add = False):
 #////////////////////////////////////////////////////////////
         
 class Glossary(object):
-    def __init__(self, tokens, text=Text(''), gid=0, concordance=[], pos_dict={},cutoff = 1000):
+    def __init__(self, tokens, text=Text(''), gid=0, concordance=[], pos_dict={},cutoff = 300):
         #major properies
         self.gid = str(gid)
         self.freq = 0.0

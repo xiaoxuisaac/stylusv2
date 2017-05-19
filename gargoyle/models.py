@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils import timezone
 from django.dispatch import receiver
+from django.db.models.signals import post_save
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from lexicon.models import EntryPointer
 from ums.models import Profile
@@ -42,10 +44,30 @@ def delete_file(sender, instance, *args, **kwargs):
     if instance.upload:
         _delete_file(instance.upload.path)
 
-#class VocabPreference(models.Model):
-#    owner = models.ForeignKey(Profile, blank=True, null=True, related_name='vocab_preference')
+class VocabPreference(models.Model):
+    DICT_PREF = (
+        (1,1),
+        (2,2),
+     )
+    owner = models.OneToOneField(Profile, blank=True, null=True, related_name='vocab_preference',on_delete=models.CASCADE)
+    show_cutoff = models.FloatField(default=4.3, validators = [MinValueValidator(-2.0), MaxValueValidator(10)])
+    diff_cutoff = models.FloatField(default=6, validators = [MinValueValidator(-2.0), MaxValueValidator(10)])
+    learner_pref = models.IntegerField(choices=DICT_PREF, default=1)
+    webster_pref = models.IntegerField(choices=DICT_PREF, default=2)
     
+    def _get_dict_pref(self):
+        return {'learner':self.learner_pref, 'collegiate':self.webster_pref}
+    dict_pref = property(_get_dict_pref)
+
+@receiver(post_save, sender=Profile)
+def create_vocab_preference(sender, instance, created, **kwargs):
+    if created:
+        VocabPreference.objects.create(owner=instance)    
     
+@receiver(post_save, sender=Profile)
+def save_vocab_preference(sender, instance, **kwargs):
+    instance.vocab_preference.save()
+
 class SessionVariables(models.Model):
     request_id = models.CharField(max_length=125, primary_key=True)
     saved_date = models.DateTimeField(editable=True, default=timezone.now)

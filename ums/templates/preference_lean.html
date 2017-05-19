@@ -1,0 +1,41 @@
+ 
+	<div class="container-fluid" style="margin-top:20px;margin-left:0; max-width:640px;">
+	    <h3>Settings</h3>
+
+	{% block content %}
+	{% csrf_token %}
+ 	<form method="post" style="position:relative;margin-top:20px;">
+ 		<div class="form-group">
+    			{% csrf_token %}
+	{{vocab_preference_form.as_p}}
+            <button type="button" id = 'submit_label' onclick="submit_pref()" class='btn-default btn' style='margin-bottom:5px;'>Save</button>
+			
+
+			
+ 		</div>
+ 	</form>
+
+	{% endblock %}
+</div>
+
+<script>
+	 function submit_pref(){
+ 		var csrf = $('[name="csrfmiddlewaretoken"]').val();
+ 		var fd = new FormData($('form')[0]);
+         $.ajax({
+ 			headers: { "X-CSRFToken": csrf },
+             url: '{% url 'preference' %}',
+             type: 'POST',
+             success: function(data, status){
+				 $('#filled_in').html(data);
+             },
+ 			error: function (jqXHR, exception) {
+ 				console.log('error');
+ 			},
+             data:fd,
+             cache: false,
+             contentType: false,
+             processData: false
+         });
+	}
+</script>

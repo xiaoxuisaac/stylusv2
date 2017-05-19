@@ -59,3 +59,4 @@ class AuthenticationForm(AuthenticationBaseForm):
 
 class PasswordResetForm(PasswordResetBaseForm):
     email = forms.EmailField(label=_("Email"), max_length=254,widget=forms.EmailInput(attrs={'type':'email','class':'form-control'}))
+    

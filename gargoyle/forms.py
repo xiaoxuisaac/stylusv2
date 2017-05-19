@@ -4,7 +4,7 @@ import datetime
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from .widgets import TextDiv, DefMenuIcon, DictLogo
-
+from django_select2.forms import Select2Widget
 
 
 class PassageForm(forms.Form):
@@ -55,3 +55,19 @@ class GlossaryDefForm(forms.Form):
     dict_type = forms.CharField(required=True,widget=DictLogo())
     data = forms.CharField(required=False,widget=TextDiv(attrs={'size':40,'class':'input-webster_def text-select'}))
     selected_sense = forms.CharField(required=True,widget=forms.HiddenInput(attrs={'class':'input-selected_sense'}))
+    
+class VocabPreferenceForm(forms.ModelForm):
+
+    class Meta:
+        model = VocabPreference
+        fields = ['show_cutoff', 'diff_cutoff', 'learner_pref', 'webster_pref']
+        widgets = {'show_cutoff':forms.TextInput(attrs={'class':'form-control'}),
+                    'diff_cutoff':forms.TextInput(attrs={'class':'form-control'}),
+                    'learner_pref':Select2Widget(attrs={'class':'form-control'}),
+                    'webster_pref':Select2Widget(attrs={'class':'form-control'}),
+                    }
+        labels = {'show_cutoff':'Difficulty Cut-Off for Displaying Vocabulary',
+                    'diff_cutoff':'Difficulty Cut-Off for Auto-Selecting Vocabulary',
+                    'learner_pref':'Webster Learner Dictionary',
+                    'webster_pref':'Webster Collegiate Dictionary',
+                    }

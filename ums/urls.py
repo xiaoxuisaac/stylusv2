@@ -49,4 +49,6 @@ urlpatterns = [
      url(r'^vocab_history/$',views.vocab_history, name='vocab_history'),
      url(r'^vocab_history/get',views.get_vocab, name='get_vocab'),
      url(r'^vocab_history/delete',views.delete_vocab, name='delete_vocab'),
+     url(r'^preference/$',views.preference, name='preference'),
+     
      ]

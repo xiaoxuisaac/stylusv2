@@ -79,7 +79,7 @@ def vocab(request,prepare='n'):
             #////Constructing Vocab Form/////////////                
             content = form.cleaned_data['content']
             glossary_dict, tokens = analyze(content, session_var=session_var)
-            select_table = vocab_select(glossary_dict)
+            select_table = vocab_select(glossary_dict, request=request)
             
             #////Storing Session Variables///////////
             #session_var.select_table = pickle.dumps(select_table)
@@ -368,7 +368,15 @@ def sort_select_table(glossary_dict, select_tabel, reverse = False):
                 select_tabel[j+1]= temp
 
              
-def vocab_select(glossary_dict, dict_pref={'learner':1, 'collegiate':2}, show_cutoff = 4.3, diff_cutoff = 6):
+def vocab_select(glossary_dict, request=None, dict_pref={'learner':1, 'collegiate':2}, show_cutoff = 4.3, diff_cutoff = 6):
+    dict_pref={'learner':1, 'collegiate':2}
+    show_cutoff = 4.3
+    diff_cutoff = 6
+    if request != None and request.user.is_authenticated():
+        dict_pref = request.user.profile.vocab_preference.dict_pref
+        show_cutoff = request.user.profile.vocab_preference.show_cutoff
+        diff_cutoff = request.user.profile.vocab_preference.diff_cutoff
+    
     select_table = []
     for gid, glossary in glossary_dict.iteritems():
       if glossary['difficulty'] > show_cutoff: 
@@ -426,6 +434,7 @@ def vocab_select(glossary_dict, dict_pref={'learner':1, 'collegiate':2}, show_cu
             select_table.append({'gid':gid,'selected':selected,'defs':[{'entry_id':entry_id, 'senses':['-1']}],'highlight':highlight})    
     sort_select_table(glossary_dict, select_table)
     return select_table
+
 
 def group_select_table(glossary_dict, select_tabel):
     for entry in select_tabel['defs']:
