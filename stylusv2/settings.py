@@ -89,7 +89,7 @@ JENKINS_TASKS = (
 WSGI_APPLICATION = 'stylusv2.wsgi.application'
 
 # lexicon Setting
-UNDEFINED_UPDATE = False
+UNDEFINED_UPDATE = True
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
