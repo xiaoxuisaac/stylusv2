@@ -19,6 +19,7 @@ def tex_def(value):
     value = value.replace('<phrase>', ' \iffalse <phrase>\\fi ').replace('</phrase>', ' \iffalse </phrase>\\fi ')
     value = value.replace('<d\_link>', ' \iffalse <d\_link>\\fi ').replace('</d\_link>', ' \iffalse </d\_link>\\fi ')    
     value = value.replace('<sx>', ' \\textsc{ ').replace('</sx>', '} ')
+    value = value.replace('<sn>', ' \\textbf{ ').replace('</sn>', '.} ')
     value = value.replace('<wsgram>', ' \iffalse <wsgram>').replace('</wsgram>', '</wsgram>\\fi ')
     value = value.replace('<snote>', ' \iffalse <snote>').replace('</snote>', '</snote>\\fi ')
     value = value.replace('<dx>', ' \iffalse <dx>').replace('</dx>', '</dx>\\fi ')
