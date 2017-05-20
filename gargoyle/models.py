@@ -265,7 +265,10 @@ class EntryPointerQuery(EntryPointer):
                     new_senses.append(str(sense))                    
         return new_senses
 
-
+    def get_ipa(self):
+        return
+        
+        
 def stringify_children(node, ignore_tags=[]):
     parts = [node.text if node.text else None]
     for c in node.getchildren():

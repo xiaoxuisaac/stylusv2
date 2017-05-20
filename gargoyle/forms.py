@@ -41,7 +41,7 @@ class VocabForm(forms.Form):
     difficulty = forms.DecimalField(max_digits=4, decimal_places=2,widget=TextDiv(attrs={'class':'input-difficulty text-select'}))
     
     highlight_selection = forms.CharField(required=False,widget=DefMenuIcon())
-    
+    ipa =  forms.CharField(required=False,max_length=100)    
     pospeech =  forms.CharField(required=False,max_length=40,widget=TextDiv(attrs={'size':4,'class':'input-pospeech text-select'}))    
     dict_def = forms.CharField(required=False,widget=TextDiv(attrs={'size':40,'class':'input-webster_def text-select'}))
     sentence = forms.CharField(required=False,widget=TextDiv(attrs={'size':40,'class':'input-sentence text-select'}))
