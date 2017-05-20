@@ -20,7 +20,7 @@ def tex_def(value):
     value = value.replace('<d\_link>', ' \iffalse <d\_link>\\fi ').replace('</d\_link>', ' \iffalse </d\_link>\\fi ')    
     value = value.replace('<sx>', ' \\textsc{ ').replace('</sx>', '} ')
     value = value.replace('<sn>', ' \\textbf{ ').replace('</sn>', '.} ')
-    value = value.replace('<spn>', ' ').replace('</spn>', ' ')
+    value = value.replace('<snp>', ' ').replace('</snp>', ' ')
     value = value.replace('<wsgram>', ' \iffalse <wsgram>').replace('</wsgram>', '</wsgram>\\fi ')
     value = value.replace('<snote>', ' \iffalse <snote>').replace('</snote>', '</snote>\\fi ')
     value = value.replace('<dx>', ' \iffalse <dx>').replace('</dx>', '</dx>\\fi ')
