@@ -224,9 +224,14 @@ class ConcordanceIndex(object):
                     break
                 left = (' ' * half_width +
                         ' '.join(self._tokens[i-context:i]))
+                if left == ' ' * half_width: 
+                    left = (' ' * half_width +
+                            ' '.join(self._tokens[:i]))
                 right = ' '.join(self._tokens[i+1:i+context])
-                left = left[-half_width:]
-                right = right[:half_width]
+                if right == ' ' * half_width:
+                    right = ' '.join(self._tokens[i+1:])
+                if len(left) > half_width: left = left[-half_width:]
+                if len(right) > half_width: right = right[:half_width]
                 
                 
                 left1 = left
