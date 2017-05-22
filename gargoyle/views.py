@@ -24,7 +24,7 @@ from ocr.models import OcrFile
 from .models import *
 from .forms import *
 from .signals import *
-
+import stylusv2.stylus_var as stylus_var
 #////////////////////////////////////////////////////////////
 # Protal  
 #////////////////////////////////////////////////////////////
@@ -368,10 +368,10 @@ def sort_select_table(glossary_dict, select_tabel, reverse = False):
                 select_tabel[j+1]= temp
 
              
-def vocab_select(glossary_dict, request=None, dict_pref={'learner':1, 'collegiate':2}, show_cutoff = 4.3, diff_cutoff = 6):
+def vocab_select(glossary_dict, request=None):
     dict_pref={'learner':1, 'collegiate':2}
-    show_cutoff = 4.3
-    diff_cutoff = 6
+    show_cutoff = stylus_var.SHOW_CUTOFF
+    diff_cutoff = stylus_var.DIFF_CUTOFF
     if request != None and request.user.is_authenticated():
         dict_pref = request.user.profile.vocab_preference.dict_pref
         show_cutoff = request.user.profile.vocab_preference.show_cutoff
@@ -681,6 +681,34 @@ def generate_pdf(template_file,context):
     except:
         return None, error, rendered_tpl
 
+#////////////////////////////////////////////////////////////
+# Combine Glossary
+#////////////////////////////////////////////////////////////
+
+def combine_glossary(glossary_list):
+    glossary_dict_temp, select_table_temp = flatten_glossary_list(glossary_list)
+    glossary_dict = {}
+    select_table = []
+    return glossary_dict, select_table
+    
+def flatten_glossary_list(glossary_list):
+    glossary_dict = {}
+    select_table = []
+    new_glossary_list = copy.deepcopy(glossary_list_original)
+    offset = 0
+    for g in new_glossary_list:
+        for gd in g['glossary_dict']:
+            gd['gid']=str(int(gd['gid'])+offset)
+            glossary_dict[gd['gid']]=gd
+        for s in g['select_tabel']:
+            s['gid'] = str(int(s['gid'])+offset)
+            select_tabel.append(s)
+        offset += len(g['select_tabel'])
+    return glossary_dict, select_table
+
+def combine_repeate(glossary_dict, select_table):
+    return glossary_dict, select_table
+    
 #////////////////////////////////////////////////////////////
 # Utilities 
 #////////////////////////////////////////////////////////////

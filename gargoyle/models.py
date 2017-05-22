@@ -8,6 +8,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 from lexicon.models import EntryPointer
 from ums.models import Profile
+import stylusv2.stylus_var as stylus_var
+
 import lxml.etree as ET
 from lxml.etree import tostring
 from itertools import chain
@@ -50,8 +52,8 @@ class VocabPreference(models.Model):
         (2,2),
      )
     owner = models.OneToOneField(Profile, blank=True, null=True, related_name='vocab_preference',on_delete=models.CASCADE)
-    show_cutoff = models.FloatField(default=4.3, validators = [MinValueValidator(-2.0), MaxValueValidator(10)])
-    diff_cutoff = models.FloatField(default=6, validators = [MinValueValidator(-2.0), MaxValueValidator(10)])
+    show_cutoff = models.FloatField(default=stylus_var.SHOW_CUTOFF, validators = [MinValueValidator(-2.0), MaxValueValidator(10)])
+    diff_cutoff = models.FloatField(default=stylus_var.DIFF_CUTOFF, validators = [MinValueValidator(-2.0), MaxValueValidator(10)])
     learner_pref = models.IntegerField(choices=DICT_PREF, default=1)
     webster_pref = models.IntegerField(choices=DICT_PREF, default=2)
     
