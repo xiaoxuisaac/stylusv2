@@ -6,9 +6,20 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from gargoyle.signals import *
+import stylusv2.stylus_var as stylus_var
 
 # Create your models here.
 
+class UserGroup(models.Model):
+    name = models.CharField(max_length=50, blank=True)
+    
+    def get_level(self):
+        if self.name in stylus_var.GROUP_LEVEL.keys():
+            return stylus_var.GROUP_LEVEL[self.name]
+        else:
+            return stylus_var.NORMAL_USER_LEVEL
+    level = property(get_level)
+    
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile',on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30, blank=True)
@@ -17,6 +28,7 @@ class Profile(models.Model):
     invitor = models.ForeignKey('Profile', related_name='invitees', blank=True,null=True)
     invitation = models.CharField(max_length=30, blank=True,null=True)
     invite_code = models.CharField(max_length=30, blank=True,null=True)
+    groups = models.ManyToManyField(UserGroup, related_name='profiles')
     def save(self, *args, **kwargs):
         if not self.id:
             self.invitation=self.invitation=id_generator(5)
@@ -40,6 +52,17 @@ class Profile(models.Model):
         return reverse('password_reset_confirm', kwargs={'uidb64':uid, 'token':token})
     pwd_reset_link = property(get_pwd_reset_link)
     
+    def get_level(self):
+        maxl = stylus_var.NORMAL_USER_LEVEL
+        if self.user.is_superuser:
+            maxl = max(maxl, stylus_var.SUPER_USER_LEVEL)
+        if self.user.is_staff:
+            maxl = max(maxl, stylus_var.STAFF_LEVEL)
+        for group in self.groups.all():
+            maxl = max(maxl, group.level)
+        return maxl
+    level = property(get_level) 
+            
     def __str__(self):
         return self.user.username
     
