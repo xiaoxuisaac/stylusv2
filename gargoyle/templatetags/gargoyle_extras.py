@@ -24,6 +24,7 @@ def web_pos(field):
         'n.pluralbutsingularorpluralinconstruction':'n.',
         'nounsingularbutsingularorpluralinconstruction':'n.',
         'n.singularbutsingularorpluralinconstruction':'n.',
+        'n.pluralbutsingularinconstruction':'n.',
         'noun':'n.',
         'verb':'v.',
         'adjective':'adj.',
