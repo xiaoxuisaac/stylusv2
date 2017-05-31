@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.urls import reverse
 from django.dispatch import receiver
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required,user_passes_test
 
 from django.http import HttpResponse, Http404, HttpResponseRedirect
@@ -34,6 +34,8 @@ class StylusRegistrationView(RegistrationBaseView):
                 
      def register(self, form):
         new_user = self.create_inactive_user(form)
+        new_user.is_active = True
+        new_user.save()
         code=form.cleaned_data['invitation']
         new_user.profile.invite_code = code
         new_user.profile.save()
@@ -46,13 +48,29 @@ class StylusRegistrationView(RegistrationBaseView):
         if ps.count()>0:
             new_user.profile.invitor = ps[0]
             new_user.save()
+        
+        User = get_user_model()
+            
+        new_user1 = form.save()
+        new_user1 = authenticate(
+            username=getattr(new_user1, User.USERNAME_FIELD),
+            password=form.cleaned_data['password1']
+        )
+        login(self.request, new_user1)
+        
         return new_user
 
      def get_form_kwargs(self):
         kwargs = super(StylusRegistrationView, self).get_form_kwargs()
         kwargs.update(self.kwargs)  # self.kwargs contains all url conf param
         return kwargs
-
+    
+     def get_success_url(self, user):
+        if True:
+            return ('/',(),{})
+        return ('registration_complete', (), {})
+        
+        
 @user_passes_test(lambda u: u.is_authenticated())
 def profile(request,load_url='vocab_history'):
     try:
