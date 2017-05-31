@@ -51,9 +51,8 @@ class StylusRegistrationView(RegistrationBaseView):
         
         User = get_user_model()
             
-        new_user1 = form.save()
         new_user1 = authenticate(
-            username=getattr(new_user1, User.USERNAME_FIELD),
+            username=getattr(new_user, User.USERNAME_FIELD),
             password=form.cleaned_data['password1']
         )
         login(self.request, new_user1)
