@@ -52,6 +52,8 @@ def web_def(field):
     return value
     
 def web_pos(field):
+    from gargoyle.py import web_pos as web_pos_gargoyle
+    return web_pos_gargoyle(field)
     if isinstance(field, str) or isinstance(field, unicode):
         value =field 
     else:
