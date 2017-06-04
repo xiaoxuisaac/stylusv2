@@ -91,11 +91,7 @@ class EntryPointerQuery(EntryPointer):
         
     def get_def_vi(self,sense):
         return self.webster_get_def_vi(sense)
-        if self.dict_type == 'learner':
-            #return 'NOT IN Collegiate', '', '-1', False
-            return  self.learner_get_def_vi(sense)
-        return self.collegiate_get_def_vi(sense)
-    
+            
     def webster_get_def_vi(self, sense, un = True):
         sense = str(sense)
         root = ET.fromstring(self.data.encode('utf-8'))
