@@ -32,10 +32,10 @@ def analyze_to_json(request):
     if request.method == 'POST':
         f=request.FILES['upload']
         if not request.user.is_authenticated():
-            response=ocrwebservice(f,'&pagerange=5')
+            response=ocrwebservice(f,'&pagerange=1-5')
             notice='You are not loged in, so only the first 5 pages of the file is processed. <a href=\'/accounts/login/\'>Login</a> or <a href=\'/accounts/register/\'>Regsister</a>'
         elif pages_remain(request.user.profile) == 0:
-            response=ocrwebservice(f,'&pagerange=5')
+            response=ocrwebservice(f,'&pagerange=1-5')
             notice='You do not have any pages to process left in you plan, so only the first 5 pages of the file was processed. To add more pages, <a href=\''+reverse('profile')+'get_ocr\''+'target=\'_blank\'>click here</a>'
         else:
             if request.user.is_staff:
