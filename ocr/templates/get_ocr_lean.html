@@ -1,13 +1,13 @@
  <div class="container-fluid" style="margin-top:20px;margin-left:0; max-width:600px;">
     <h3>Get More OCR Pages </h3>
 	<p>Hi!</p>
-	<p>It is great to know that you find the OCR function awesome. Currently OCR is still in alpha version, and if you want to add more pages there are two ways:</p>
+	<p>It is great to know that you find the OCR function helpful. Currently OCR is in alpha version. And there are two ways to add more pages:</p>
     <h4>Invite Friends</h4>
-    <p>If you invite a friend to register at Stylus, both you and your friend will get 100 free OCR pages.</p>
+    <p>When inviting a friend to register at Stylus, both you and your friend will get 100 free OCR pages.</p>
     <p>invitation link: <a href="{% url 'registration_register' %}{{user.profile.invitation}}" target="_blank">{{ request.get_host }}{% url 'registration_register' %}{{user.profile.invitation}}</a><p>
     <h4> Buy Pages</h4>
 	<p>You can buy more pages at the price of 5RMB/100pages or 40RMB/1000pages. For more information please contact Wechat: xiaoxuisaac</p>
-    <p>Why not free? Because Stylus buys OCR service from other website at the price of 40RMB/1000pages. Thank you very much for your support!</p>
+    <p>Why not free? Stylus bought OCR service from an external website at the price of 40RMB/1000pages. Thank you very much for your support!</p>
     <h4> Suggestions?</h4>
     <p> If you have any suggestions or questions, please feel free to <a href='{% url 'feedback' %}'>contact us!</a></p>
 </div>
