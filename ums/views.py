@@ -93,7 +93,10 @@ def vocab_history(request):
         count = 0    
         for s in select_table:
             if s['selected']: count += 1
-        code = hashlib.sha224(variables.request_id).hexdigest()[-7:]
+        try:
+            code = hashlib.sha224(variables.request_id).hexdigest()[-7:]
+        except:
+            code = 'none'
         time = {'year':variables.created_date.year, 'month':variables.created_date.strftime("%B"),'day':variables.created_date.day}
         if variables.show: vocabs.append({'code':code, 'time':time,'counter':count,'name':name})
     ocrs=[]
